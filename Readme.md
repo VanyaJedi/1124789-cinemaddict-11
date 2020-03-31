@@ -1,7 +1,7 @@
 # Личный проект «Киноман» [![Build status][travis-image]][travis-url]
 
 * Студент: [Иван Некипелов](https://up.htmlacademy.ru/ecmascript/11/user/1124789).
-* Наставник: `Неизвестно`.
+* Наставник: `Андрей Фидельман`.
 
 ---
 
