@@ -1,7 +1,7 @@
 export const createMenuTemplate = (films) => {
-  let watchlist = films.filter((it) => it.addToWatchlist);
-  let watchedList = films.filter((it) => it.watched);
-  let favlist = films.filter((it) => it.favourites);
+  const watchlist = films.filter((it) => it.addToWatchlist);
+  const watchedList = films.filter((it) => it.watched);
+  const favlist = films.filter((it) => it.favourites);
   return (
     `<nav class="main-navigation">
       <div class="main-navigation__items">

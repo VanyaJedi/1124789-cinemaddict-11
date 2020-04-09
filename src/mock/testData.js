@@ -47,7 +47,7 @@ const getRandomDate = function (start, end) {
 
 
 const generateComment = function () {
-  let randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
+  const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
 
   return {
     smile: getRandomValue(SMILES),
@@ -58,8 +58,8 @@ const generateComment = function () {
 };
 
 const generateFilmCard = function () {
-  let randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
-  let filmDuration = Math.floor(Math.random() * 300);
+  const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
+  const filmDuration = Math.floor(Math.random() * 300);
   const commentsArray = [];
   for (let i = 0; i < Math.floor(Math.random() * 5); i++) {
     commentsArray.push(generateComment());
