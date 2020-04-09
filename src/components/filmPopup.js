@@ -1,4 +1,4 @@
-import * as moment from "./moment.js";
+import moment from "moment";
 
 const createGenresList = (genres) => {
   return genres.map((genre) => {
