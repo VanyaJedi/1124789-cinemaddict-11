@@ -5,49 +5,47 @@ const FILM_COUNT = 23;
 const FILM_COUNT_SHOW = 5;
 const films = [];
 
-
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
-};
-
-import {createContentTemplate} from "./components/content.js";
-import {createFilmCardTemplate} from "./components/filmCard";
-import {createMenuTemplate} from "./components/menu.js";
-import {mostCommentedTemplate} from "./components/mostCommented.js";
-import {createShowMoreTemplate} from "./components/showMoreBtn.js";
-import {createStatisticsTemplate} from "./components/statisctics.js";
-import {topRatedTemplate} from "./components/topRated.js";
-import {createUserProfileTemplate} from "./components/userProfile.js";
-import {createSortTemplate} from "./components/sort.js";
+import {render} from "./util.js";
+import Content from "./components/content.js";
+import FilmCard from "./components/filmCard.js";
+import Menu from "./components/menu.js";
+import MostCommented from "./components/mostCommented.js";
+import ShowMoreBtn from "./components/showMoreBtn.js";
+import Statistics from "./components/statisctics.js";
+import TopRated from "./components/topRated.js";
+import UserProfile from "./components/userProfile.js";
+import Sort from "./components/sort.js";
 import {generateFilmCard} from "./mock/testData.js";
-import {createFilmPopup} from "./components/filmPopup.js";
+import FilmPopup from "./components/filmPopup.js";
 
 for (let i = 0; i < FILM_COUNT; i++) {
-  films.push(generateFilmCard());
+  films.push(generateFilmCard(i));
 }
+render(headerElem, new UserProfile().getElement());
+render(mainElem, new Menu(films).getElement());
+render(mainElem, new Sort().getElement());
+render(mainElem, new Content().getElement());
 
-render(headerElem, createUserProfileTemplate());
-render(mainElem, createMenuTemplate(films));
-render(mainElem, createSortTemplate());
-render(mainElem, createContentTemplate());
-
+const filmsSection = document.querySelector(`.films`);
 const filmsList = document.querySelector(`.films-list`);
 const filmsContainer = document.querySelector(`.films-list__container`);
 
 for (let i = 0; i < FILM_COUNT_SHOW; i++) {
-  render(filmsContainer, createFilmCardTemplate(films[i]));
+  render(filmsContainer, new FilmCard(films[i]).getElement());
 }
 
-render(filmsList, createShowMoreTemplate());
-render(filmsContainer, topRatedTemplate(films));
-render(filmsContainer, mostCommentedTemplate(films));
-render(footerElem, createStatisticsTemplate(films));
+render(filmsList, new ShowMoreBtn().getElement());
+render(filmsSection, new TopRated(films).getElement());
+render(filmsSection, new MostCommented(films).getElement());
+render(footerElem, new Statistics(films).getElement());
 
 const clickFilmHandler = function (evt) {
   if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
-    render(document.body, createFilmPopup(films[0]));
+    const address = evt.target.parentNode.dataset.address;
+    const filmPopup = new FilmPopup(films[address]);
+    render(document.body, filmPopup.getElement());
     document.body.classList.add(`hide-overflow`);
-    const closeBtn = document.querySelector(`.film-details__close-btn`);
+    const closeBtn = filmPopup.getElement().querySelector(`.film-details__close-btn`);
     const closeBtnHandler = function () {
       document.querySelector(`.film-details`).remove();
       document.body.classList.remove(`hide-overflow`);
@@ -56,7 +54,7 @@ const clickFilmHandler = function (evt) {
   }
 };
 
-filmsContainer.addEventListener(`click`, clickFilmHandler);
+filmsSection.addEventListener(`click`, clickFilmHandler);
 
 const showMoreBtn = document.querySelector(`.films-list__show-more`);
 
@@ -66,7 +64,7 @@ const showMoreFilms = function () {
   currentFilmsRendered += FILM_COUNT_SHOW;
 
   films.slice(prevFilmsRendered, currentFilmsRendered)
-    .forEach((film) => render(filmsContainer, createFilmCardTemplate(film)));
+    .forEach((film) => render(filmsContainer, new FilmCard(film).getElement()));
 
   if (currentFilmsRendered >= films.length) {
     showMoreBtn.remove();

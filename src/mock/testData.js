@@ -57,7 +57,7 @@ const generateComment = function () {
   };
 };
 
-const generateFilmCard = function () {
+const generateFilmCard = function (address) {
   const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
   const filmDuration = Math.floor(Math.random() * 300);
   const commentsArray = [];
@@ -66,6 +66,7 @@ const generateFilmCard = function () {
   }
 
   return {
+    item: address,
     poster: getRandomValue(POSTERS),
     name: getRandomValue(FILM_NAMES),
     originalName: `origin name`,
