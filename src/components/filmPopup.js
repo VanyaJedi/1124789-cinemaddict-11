@@ -1,3 +1,5 @@
+
+import {createElement} from "../util.js";
 import moment from "moment";
 
 const createGenresList = (genres) => {
@@ -29,13 +31,12 @@ const createCommentList = (comments) => {
   }).join(`\n`);
 };
 
-export const createFilmPopup = (film) => {
+const createFilmPopupTemplate = (film) => {
 
   const commentsList = createCommentList(film.comments);
   const genresList = createGenresList(film.genres);
   return (
-    `
-    <section class="film-details">
+    `<section class="film-details">
     <form class="film-details__inner" action="" method="get">
       <div class="form-details__top-container">
         <div class="film-details__close">
@@ -154,3 +155,26 @@ export const createFilmPopup = (film) => {
     `
   );
 };
+
+export default class FilmPopup {
+  constructor(film) {
+    this._film = film;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilmPopupTemplate(this._film);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
+
