@@ -1,7 +1,7 @@
 
 import {createElement} from "../util.js";
 
-export default class content {
+export default class Content {
 
   constructor(film) {
     this._film = film;

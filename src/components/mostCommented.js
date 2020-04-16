@@ -9,7 +9,7 @@ const mostCommentedTemplate = (films) => {
                                 .slice(0, 2);
 
   const mostCommented = mostCommentedArray.map((it) => {
-    let filmCard = new FilmCard(it);
+    const filmCard = new FilmCard(it);
     return filmCard.getTemplate();
   }).join(`\n`);
 
