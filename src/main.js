@@ -17,6 +17,7 @@ import UserProfile from "./components/userProfile.js";
 import Sort from "./components/sort.js";
 import {generateFilmCard} from "./mock/testData.js";
 import FilmPopup from "./components/filmPopup.js";
+import NoFilm from "./components/nofilm.js";
 
 for (let i = 0; i < FILM_COUNT; i++) {
   films.push(generateFilmCard(i));
@@ -50,6 +51,16 @@ const clickFilmHandler = function (evt) {
       document.querySelector(`.film-details`).remove();
       document.body.classList.remove(`hide-overflow`);
     };
+
+    const onEscKeyDownClosePopup = (btnEvt) => {
+      const isEscKey = btnEvt.key === `Escape` || btnEvt.key === `Esc`;
+
+      if (isEscKey) {
+        closeBtnHandler();
+        document.removeEventListener(`keydown`, onEscKeyDownClosePopup);
+      }
+    };
+    document.addEventListener(`keydown`, onEscKeyDownClosePopup);
     closeBtn.addEventListener(`click`, closeBtnHandler);
   }
 };
@@ -72,3 +83,7 @@ const showMoreFilms = function () {
 };
 
 showMoreBtn.addEventListener(`click`, showMoreFilms);
+
+const noFilmSection = new NoFilm();
+
+filmsSection.replaceChild(noFilmSection.getElement(), filmsList);
