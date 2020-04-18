@@ -1,4 +1,4 @@
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstractComponent.js";
 
 const createMenuTemplate = (films) => {
   const watchList = films.filter((it) => it.addToWatchlist);
@@ -17,24 +17,13 @@ const createMenuTemplate = (films) => {
   );
 };
 
-export default class Menu {
+export default class Menu extends AbstractComponent {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createMenuTemplate(this._film);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
