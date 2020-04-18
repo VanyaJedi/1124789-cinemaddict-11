@@ -1,11 +1,10 @@
+import AbstractComponent from "./abstractComponent.js";
 
-import {createElement} from "../util.js";
-
-export default class FilmCard {
+export default class FilmCard extends AbstractComponent {
 
   constructor(film, address) {
+    super();
     this._film = film;
-    this._element = null;
     this._address = address;
   }
 
@@ -31,17 +30,6 @@ export default class FilmCard {
         </form>
       </article>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
 

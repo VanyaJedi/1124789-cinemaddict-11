@@ -1,5 +1,5 @@
 
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstractComponent.js";
 import moment from "moment";
 
 const createGenresList = (genres) => {
@@ -156,25 +156,19 @@ const createFilmPopupTemplate = (film) => {
   );
 };
 
-export default class FilmPopup {
+export default class FilmPopup extends AbstractComponent {
   constructor(film) {
+    super();
     this._film = film;
-    this._element = null;
   }
 
   getTemplate() {
     return createFilmPopupTemplate(this._film);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  setCloseBtnHandler(handler) {
+    const closeBtn = this.getElement().querySelector(`.film-details__close-btn`);
+    closeBtn.addEventListener(`click`, handler);
   }
 }
 

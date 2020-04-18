@@ -1,6 +1,6 @@
 
 import FilmCard from "./filmCard.js";
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstractComponent.js";
 
 const mostCommentedTemplate = (films) => {
 
@@ -25,24 +25,14 @@ const mostCommentedTemplate = (films) => {
 };
 
 
-export default class MostCommented {
+export default class MostCommented extends AbstractComponent {
   constructor(films) {
+    super();
     this._films = films;
-    this._element = null;
   }
 
   getTemplate() {
     return mostCommentedTemplate(this._films);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

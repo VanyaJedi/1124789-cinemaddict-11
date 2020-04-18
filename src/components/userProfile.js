@@ -1,10 +1,7 @@
 
-import {createElement} from "../util.js";
+import AbstractComponent from "./abstractComponent.js";
 
-export default class UserProfile {
-  constructor() {
-    this._element = null;
-  }
+export default class UserProfile extends AbstractComponent {
 
   getTemplate() {
     return (
@@ -13,16 +10,5 @@ export default class UserProfile {
         <img class="profile__avatar" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
       </section>`
     );
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
