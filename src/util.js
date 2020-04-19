@@ -15,3 +15,8 @@ export const render = (container, element, place = `beforeend`) => {
   }
 };
 
+export const sortTypes = {
+  BY_DATE: `date`,
+  BY_RATE: `rate`,
+  DEFAULT: `default`,
+};
