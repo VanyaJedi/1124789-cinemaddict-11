@@ -75,7 +75,8 @@ const generateFilmCard = function (address) {
     authors: [`author1`, `author2`, `author3`, `author4`],
     actors: [`Erich von Stroheim`, `Mary Beth Hughes`, `Dan Duryea`],
     releaseDate: {
-      day: randomDate.getDay() < 10 ? `0` + randomDate.getDay() : randomDate.getDay(),
+      date: randomDate,
+      day: randomDate.getDate() < 10 ? `0` + randomDate.getDate() : randomDate.getDate(),
       month: months.get(randomDate.getMonth()),
       year: randomDate.getFullYear()
     },
