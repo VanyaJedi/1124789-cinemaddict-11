@@ -161,6 +161,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     super();
     this._film = film;
 
+    this._closePopupHandler = null;
     this._addToWatchHandler = null;
     this._addWatchedHandler = null;
     this._addTofavoriteHandler = null;
@@ -176,6 +177,7 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   setCloseBtnHandler(handler) {
+    this._closePopupHandler = handler;
     const closeBtn = this.getElement().querySelector(`.film-details__close-btn`);
     closeBtn.addEventListener(`click`, handler);
   }
@@ -205,6 +207,7 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   _subscribeEventListeners() {
+    this.setCloseBtnHandler(this._closePopupHandler);
     this.setAddToWatchBtnClick(this._addToWatchHandler);
     this.setMarkAsWatchedBtnClick(this._addWatchedHandler);
     this.setAddTofavoriteBtnClick(this._addTofavoriteHandler);
