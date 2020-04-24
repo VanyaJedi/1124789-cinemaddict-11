@@ -30,7 +30,7 @@ export default class Sort extends AbstractComponent {
   }
 
   setClickHandler(handler) {
-    this._element.addEventListener(`click`, (evt) => {
+    this.getElement().addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
       if (evt.target.classList.contains(`sort__button`)) {
