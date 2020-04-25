@@ -164,7 +164,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._closePopupHandler = null;
     this._addToWatchHandler = null;
     this._addWatchedHandler = null;
-    this._addTofavoriteHandler = null;
+    this._addToFavoriteHandler = null;
     this._addEmojiClickHandler = null;
   }
 
@@ -174,6 +174,13 @@ export default class FilmPopup extends AbstractSmartComponent {
 
   recoveryListeners() {
     this._subscribeEventListeners();
+  }
+
+  closePopup() {
+    if (document.querySelector(`.film-details`)) {
+      document.querySelector(`.film-details`).remove();
+      document.body.classList.remove(`hide-overflow`);
+    }
   }
 
   setCloseBtnHandler(handler) {
@@ -192,8 +199,8 @@ export default class FilmPopup extends AbstractSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--watched`).addEventListener(`click`, handler);
   }
 
-  setAddTofavoriteBtnClick(handler) {
-    this._addTofavoriteHandler = handler;
+  setAddToFavoriteBtnClick(handler) {
+    this._addToFavoriteHandler = handler;
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
@@ -210,7 +217,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     this.setCloseBtnHandler(this._closePopupHandler);
     this.setAddToWatchBtnClick(this._addToWatchHandler);
     this.setMarkAsWatchedBtnClick(this._addWatchedHandler);
-    this.setAddTofavoriteBtnClick(this._addTofavoriteHandler);
+    this.setAddToFavoriteBtnClick(this._addToFavoriteHandler);
     this.setEmojiClickHandler(this._addEmojiClickHandler);
   }
 
