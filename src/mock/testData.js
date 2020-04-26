@@ -1,19 +1,4 @@
-const months = new Map(
-    [
-      [0, `January`],
-      [1, `February`],
-      [2, `March`],
-      [3, `April`],
-      [4, `May`],
-      [5, `June`],
-      [6, `July`],
-      [7, `August`],
-      [8, `September`],
-      [9, `October`],
-      [10, `November`],
-      [11, `December`]
-    ]
-);
+import moment from "moment";
 
 const COUNTRIES = [`Russia`, `USA`, `North Korea`, `France`];
 
@@ -48,7 +33,6 @@ const getRandomDate = function (start, end) {
 
 const generateComment = function () {
   const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
-
   return {
     smile: getRandomValue(SMILES),
     user: `User1`,
@@ -60,6 +44,7 @@ const generateComment = function () {
 const generateFilmCard = function (address) {
   const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
   const filmDuration = Math.floor(Math.random() * 300);
+  const durationToShow = `${moment.utc().startOf(`day`).add({minutes: filmDuration}).format(`H`)}h ${moment.utc().startOf(`day`).add({minutes: filmDuration}).format(`mm`)}m`;
   const commentsArray = [];
   for (let i = 0; i < Math.floor(Math.random() * 5); i++) {
     commentsArray.push(generateComment());
@@ -76,11 +61,11 @@ const generateFilmCard = function (address) {
     actors: [`Erich von Stroheim`, `Mary Beth Hughes`, `Dan Duryea`],
     releaseDate: {
       date: randomDate,
-      day: randomDate.getDate() < 10 ? `0` + randomDate.getDate() : randomDate.getDate(),
-      month: months.get(randomDate.getMonth()),
+      day: moment(randomDate).format(`DD`),
+      month: moment(randomDate).format(`MMMM`),
       year: randomDate.getFullYear()
     },
-    duration: Math.floor(filmDuration / 60) + `h ` + (filmDuration % 60 === 0 ? `` : filmDuration % 60 + `m`),
+    duration: durationToShow,
     country: getRandomValue(COUNTRIES),
     genres: GENRES,
     desc: getRandomValue(FILM_DESC),
