@@ -21,7 +21,7 @@ const createCommentList = (comments) => {
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.user}</span>
             <span class="film-details__comment-day">${moment(comment.date).locale(`ru`).format(`YYYY/MM/DD HH:SS`)}</span>
-            <button class="film-details__comment-delete">Delete</button>
+            <button data-address=${comment.item} class="film-details__comment-delete">Delete</button>
           </p>
         </div>
       </li>
@@ -166,6 +166,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._addWatchedHandler = null;
     this._addToFavoriteHandler = null;
     this._addEmojiClickHandler = null;
+    this._addDeleteCommentHandler = null;
   }
 
   getTemplate() {
@@ -208,8 +209,16 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._addEmojiClickHandler = handler;
     const emojis = this.getElement().querySelectorAll(`.film-details__emoji-item`);
 
-    emojis.forEach((emoji) => {
+    Array.from(emojis).forEach((emoji) => {
       emoji.addEventListener(`click`, handler);
+    });
+  }
+
+  setDeleteCommentHandler(handler) {
+    this._addDeleteCommentHandler = handler;
+    const comments = this.getElement().querySelectorAll(`.film-details__comment-delete`);
+    Array.from(comments).forEach((deleteBtn) => {
+      deleteBtn.addEventListener(`click`, handler);
     });
   }
 
@@ -219,6 +228,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     this.setMarkAsWatchedBtnClick(this._addWatchedHandler);
     this.setAddToFavoriteBtnClick(this._addToFavoriteHandler);
     this.setEmojiClickHandler(this._addEmojiClickHandler);
+    this.setDeleteCommentHandler(this._addDeleteCommentHandler);
   }
 
 }

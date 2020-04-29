@@ -10,19 +10,33 @@ import Statistics from "./components/statisctics.js";
 import UserProfile from "./components/userProfile.js";
 import {generateFilmCard} from "./mock/testData.js";
 import PageController from "./controllers/pageController.js";
+import FilterController from "./controllers/filterController.js";
+import Movies from "./models/movies.js";
 
 for (let i = 0; i < FILM_COUNT; i++) {
   films.push(generateFilmCard(i));
 }
 
+const moviesModel = new Movies();
+moviesModel.setMovies(films);
+
 const userProfile = new UserProfile();
 const content = new Content();
-
 render(headerElem, userProfile);
+
+
+const filterController = new FilterController(mainElem, moviesModel);
+filterController.render();
+
+
+const pageController = new PageController(content, moviesModel);
+pageController.renderSort();
+
 render(mainElem, content);
 
-const pageController = new PageController(content);
-pageController.render(films);
+pageController.render();
+pageController.renderTopAndMostCommented();
+pageController.renderShowMoreBtn();
 
 const statisctics = new Statistics(films);
 render(footerElem, statisctics);

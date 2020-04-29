@@ -1,7 +1,9 @@
 
 import FilmPopup from "../components/filmPopup.js";
 import FilmCard from "../components/filmCard.js";
-import {render, replace} from "../util/manipulateDOM.js";
+import {render, replace, remove} from "../util/manipulateDOM.js";
+
+import {encode} from "he";
 
 export default class MovieController {
 
@@ -77,19 +79,28 @@ export default class MovieController {
       });
 
       this._filmPopupComponent.setEmojiClickHandler((smileEvt) => {
+        const encodeMessage = encode(this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value);
         const commentObject = {
+          item: this._filmData.comments.length,
           smile: `${smileEvt.target.value}.png`,
           user: `random from server`,
-          message: this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value,
+          message: encodeMessage,
           date: new Date()
         };
         this._filmData.comments.push(commentObject);
         this._filmPopupComponent.rerender();
       });
 
+      this._filmPopupComponent.setDeleteCommentHandler((btnEvt) => {
+        btnEvt.preventDefault();
+        const commentAddress = btnEvt.target.dataset.address;
+        const indexComment = this._filmData.comments.findIndex((it) => parseInt(it.item, 10) === parseInt(commentAddress, 10));
+        this._filmData.comments.splice(indexComment, 1);
+        this._filmPopupComponent.rerender();
+      });
+
+
       render(document.body, this._filmPopupComponent);
-
-
       document.body.classList.add(`hide-overflow`);
 
       const onEscKeyDownClosePopup = (btnEvt) => {
@@ -111,5 +122,9 @@ export default class MovieController {
     if (this._filmPopupComponent) {
       this._filmPopupComponent.closePopup();
     }
+  }
+
+  destroy() {
+    remove(this._filmComponent);
   }
 }
