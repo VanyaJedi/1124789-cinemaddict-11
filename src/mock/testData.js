@@ -31,9 +31,10 @@ const getRandomDate = function (start, end) {
 };
 
 
-const generateComment = function () {
+const generateComment = function (address) {
   const randomDate = getRandomDate(new Date(2012, 0, 1), new Date());
   return {
+    item: address,
     smile: getRandomValue(SMILES),
     user: `User1`,
     message: `bla bla bla film suck`,
@@ -47,7 +48,7 @@ const generateFilmCard = function (address) {
   const durationToShow = `${moment.utc().startOf(`day`).add({minutes: filmDuration}).format(`H`)}h ${moment.utc().startOf(`day`).add({minutes: filmDuration}).format(`mm`)}m`;
   const commentsArray = [];
   for (let i = 0; i < Math.floor(Math.random() * 5); i++) {
-    commentsArray.push(generateComment());
+    commentsArray.push(generateComment(i));
   }
 
   return {
@@ -71,9 +72,9 @@ const generateFilmCard = function (address) {
     desc: getRandomValue(FILM_DESC),
     comments: commentsArray,
     ageRate: Math.floor(Math.random() * 18) + `+`,
-    addToWatchlist: false,
+    addToWatchlist: address === 1 || address === 2 ? true : false,
     watched: true,
-    favourites: false
+    favourites: address === 5 ? true : false,
   };
 };
 
