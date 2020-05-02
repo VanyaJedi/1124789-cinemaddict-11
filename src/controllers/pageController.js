@@ -78,7 +78,6 @@ export default class PageController {
   }
 
   render() {
-    console.log(this.api);
     this._movies = this._moviesModel.getMovies();
 
     if (this._whenNoFilms()) {
@@ -139,9 +138,7 @@ export default class PageController {
   _onDataChange(filmController, oldData, newData) {
     const movieId = oldData.item;
 
-    this.api.updateMovie(movieId, newData)
-      .then((response) => {console.log(response)})
-      .catch((error) => {console.log(error)})
+    this.api.updateMovie(movieId, newData);
 
     const isOldData = this._moviesModel.updateMovie(movieId, newData);
     if (isOldData) {
