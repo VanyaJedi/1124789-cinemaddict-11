@@ -23,7 +23,7 @@ for (let i = 0; i < FILM_COUNT; i++) {
   films.push(generateFilmCard(i));
 }
 
-const api = new API(END_POINT, AUTH);
+const api = new API(END_POINT);
 
 const moviesModel = new Movies();
 const userProfile = new UserProfile();
@@ -66,7 +66,6 @@ const renderContent = () => {
 api.getMovies()
 .then((movies) => {
   moviesModel.setMovies(movies);
-  console.log(api._movies[0]);
   renderContent();
 });
 

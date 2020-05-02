@@ -138,13 +138,14 @@ export default class PageController {
   _onDataChange(filmController, oldData, newData) {
     const movieId = oldData.item;
 
-    this.api.updateMovie(movieId, newData);
+    this.api.updateMovie(movieId, newData)
+    .then((updatedData) => {
+      const isOldData = this._moviesModel.updateMovie(movieId, updatedData);
+      if (isOldData) {
 
-    const isOldData = this._moviesModel.updateMovie(movieId, newData);
-    if (isOldData) {
-
-      filmController.render(newData);
-    }
+        filmController.render(newData);
+      }
+    });
   }
 
   _onViewChange() {

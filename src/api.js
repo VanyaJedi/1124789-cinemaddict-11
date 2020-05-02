@@ -6,9 +6,8 @@ const AUTH_GET = `Basic kTy9gIdsz2317rD`;
 
 export default class API {
 
-  constructor(endPoint, auth) {
+  constructor(endPoint) {
     this._endPoint = endPoint;
-    this._auth = auth;
     this._movies = [];
     this._comments = [];
   }
@@ -54,13 +53,16 @@ export default class API {
 
   updateMovie(id, data) {
     const movieToUpdate = new MovieAdapter();
-    //console.log(JSON.stringify(movieToUpdate.adaptMovieToRawAndReturn(data)));
     return this._load({
       url: `movies/${id}`,
       method: `PUT`,
       body: JSON.stringify(movieToUpdate.adaptMovieToRawAndReturn(data)),
       headers: new Headers({"Content-Type": `application/json`})
-    }, AUTH_PUT);
+    }, AUTH_PUT)
+    .then((updatedData) => {
+      return new MovieAdapter(updatedData, updatedData.comments).adaptAndReturnData();
+    })
+    .catch(this._onError);
   }
 
 }

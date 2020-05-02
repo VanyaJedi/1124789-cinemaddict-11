@@ -40,7 +40,6 @@ export default class MovieAdapter {
   adaptMovieToRawAndReturn(movie) {
     return {
       id: movie.item,
-      comments: movie.comments.map((it) => it.id),
       film_info: {
         actors: movie.actors,
         age_rating: movie.ageRate,
@@ -55,14 +54,16 @@ export default class MovieAdapter {
         },
         runtime: movie.rawDuration,
         title: movie.name,
-        total_rating: movie.rate
+        total_rating: movie.rate,
+        writers: movie.authors
       },
       user_details: {
         already_watched: movie.watched,
         favorite: movie.favourites,
         watching_date: movie.watchingDate,
         watchlist: movie.addToWatchlist
-      }
+      },
+      comments: movie.comments.map((it) => it.id)
     };
   }
 
