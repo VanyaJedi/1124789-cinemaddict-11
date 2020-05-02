@@ -9,7 +9,6 @@ import Sort from "../components/sort.js";
 import MovieController from "./movieController.js";
 
 const FILM_COUNT_SHOW = 5;
-const FILMS_LENGTH_TEST = 1;
 const mainElem = document.querySelector(`.main`);
 
 const getSortedFilms = (filmsArray, sortType, from, to) => {
@@ -41,11 +40,14 @@ const renderFilms = (filmsList, films, onDataChange, onViewChange) => {
 
 
 export default class PageController {
-  constructor(container, movieModel) {
+  constructor(container, movieModel, api) {
 
     this._moviesModel = movieModel;
     this._showedFilms = [];
     this._movies = null;
+    this.isHide = false;
+
+    this.api = api;
 
     this._container = container;
     this._sortComponent = new Sort();
@@ -63,8 +65,20 @@ export default class PageController {
     this._moviesModel.setFilterChangeHandler(this._onFilterChange);
   }
 
+  hide() {
+    this.isHide = true;
+    this._sortComponent.hide();
+    this._container.hide();
+  }
+
+  show() {
+    this.isHide = false;
+    this._sortComponent.show();
+    this._container.show();
+  }
 
   render() {
+    console.log(this.api);
     this._movies = this._moviesModel.getMovies();
 
     if (this._whenNoFilms()) {
@@ -114,7 +128,7 @@ export default class PageController {
   }
 
   _whenNoFilms() {
-    if ((FILMS_LENGTH_TEST) === 0) {
+    if (this._movies.length === 0) {
       this._container.getElement().innerHTML = ``;
       render(this._container.getElement(), this._noFilmComponent);
       return true;
@@ -123,9 +137,15 @@ export default class PageController {
   }
 
   _onDataChange(filmController, oldData, newData) {
+    const movieId = oldData.item;
 
-    const isOldData = this._moviesModel.updateMovie(oldData.item, newData);
+    this.api.updateMovie(movieId, newData)
+      .then((response) => {console.log(response)})
+      .catch((error) => {console.log(error)})
+
+    const isOldData = this._moviesModel.updateMovie(movieId, newData);
     if (isOldData) {
+
       filmController.render(newData);
     }
   }

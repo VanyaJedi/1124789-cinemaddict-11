@@ -1,10 +1,10 @@
 
 import AbstractComponent from "./abstractComponent.js";
-
-export default class ShowMoreBtn extends AbstractComponent {
+export default class Statistics extends AbstractComponent {
   constructor(films) {
     super();
-    this._films = films;
+    this._movieModel = films;
+    this._films = films.getAllMovies();
   }
 
   getTemplate() {

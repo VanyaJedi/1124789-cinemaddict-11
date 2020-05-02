@@ -14,14 +14,14 @@ const createCommentList = (comments) => {
       `
       <li class="film-details__comment">
         <span class="film-details__comment-emoji">
-          <img src="./images/emoji/${comment.smile}" width="55" height="55" alt="emoji-smile">
+          <img src="./images/emoji/${comment.emotion}.png" width="55" height="55" alt="emoji-smile">
         </span>
         <div>
-          <p class="film-details__comment-text">${comment.message}</p>
+          <p class="film-details__comment-text">${comment.comment}</p>
           <p class="film-details__comment-info">
-            <span class="film-details__comment-author">${comment.user}</span>
+            <span class="film-details__comment-author">${comment.author}</span>
             <span class="film-details__comment-day">${moment(comment.date).locale(`ru`).format(`YYYY/MM/DD HH:SS`)}</span>
-            <button data-address=${comment.item} class="film-details__comment-delete">Delete</button>
+            <button data-address=${comment.id} class="film-details__comment-delete">Delete</button>
           </p>
         </div>
       </li>
@@ -44,7 +44,7 @@ const createFilmPopupTemplate = (film) => {
         </div>
         <div class="film-details__info-wrap">
           <div class="film-details__poster">
-            <img class="film-details__poster-img" src="./images/posters/${film.poster}" alt="">
+            <img class="film-details__poster-img" src="${film.poster}" alt="">
 
             <p class="film-details__age">${film.ageRate}</p>
           </div>
