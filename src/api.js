@@ -54,13 +54,13 @@ export default class API {
 
   updateMovie(id, data) {
     const movieToUpdate = new MovieAdapter();
+    //console.log(JSON.stringify(movieToUpdate.adaptMovieToRawAndReturn(data)));
     return this._load({
       url: `movies/${id}`,
       method: `PUT`,
       body: JSON.stringify(movieToUpdate.adaptMovieToRawAndReturn(data)),
-      headers: new Headers({"Content-Type": `application/json`
-      }, AUTH_PUT)
-    });
+      headers: new Headers({"Content-Type": `application/json`})
+    }, AUTH_PUT);
   }
 
 }
