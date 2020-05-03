@@ -1,8 +1,10 @@
 
 import MovieAdapter from "./models/moviesAdapter.js";
+import commentsAdapter from "./models/commentsAdapter.js";
 
 const AUTH_PUT = `Basic er883jdzbdw`;
 const AUTH_GET = `Basic kTy9gIdsz2317rD`;
+
 
 export default class API {
 
@@ -35,32 +37,33 @@ export default class API {
 
   getMovies() {
     return this._load({url: `movies`}, AUTH_GET)
-      .then((movies) => {
-        this._movies = movies;
-        return this._movies.map((it) => {
-          return this._load({url: `comments/${it.id}`}, AUTH_GET);
-        });
-      })
-      .then((commentPromise) => Promise.all(commentPromise))
-      .then((commentResponse) => {
-        this._comments = commentResponse;
-        return this._movies.map((it) => {
-          return new MovieAdapter(it, this._comments[it.id]).adaptAndReturnData();
+      .then((moviesFromServer) => {
+        return moviesFromServer.map((rawMovie) => {
+          return MovieAdapter.parseMovie(rawMovie);
         });
       })
       .catch(this._onError);
   }
 
+  getComments(id) {
+    return this._load({url: `comments/${id}`}, AUTH_GET)
+    .then((comments) => {
+      return comments.map((comment) => {
+        return commentsAdapter.parseComment(comment);
+      });
+    })
+    .catch(this._onError);
+  }
+
   updateMovie(id, data) {
-    const movieToUpdate = new MovieAdapter();
     return this._load({
       url: `movies/${id}`,
       method: `PUT`,
-      body: JSON.stringify(movieToUpdate.adaptMovieToRawAndReturn(data)),
+      body: JSON.stringify(data),
       headers: new Headers({"Content-Type": `application/json`})
     }, AUTH_PUT)
     .then((updatedData) => {
-      return new MovieAdapter(updatedData, updatedData.comments).adaptAndReturnData();
+      return new MovieAdapter(updatedData);
     })
     .catch(this._onError);
   }

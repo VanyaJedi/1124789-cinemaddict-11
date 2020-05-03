@@ -7,6 +7,7 @@ import NoFilm from "../components/nofilm.js";
 import Sort from "../components/sort.js";
 
 import MovieController from "./movieController.js";
+import MovieAdapter from "../models/moviesAdapter.js";
 
 const FILM_COUNT_SHOW = 5;
 const mainElem = document.querySelector(`.main`);
@@ -29,15 +30,14 @@ const getSortedFilms = (filmsArray, sortType, from, to) => {
   return showingFilms.slice(from, to);
 };
 
-const renderFilms = (filmsList, films, onDataChange, onViewChange) => {
+const renderFilms = (filmsList, films, onDataChange, onViewChange, api) => {
   return films.map((film) => {
-    const movieController = new MovieController(filmsList, onDataChange, onViewChange);
+    const movieController = new MovieController(filmsList, onDataChange, onViewChange, api);
     movieController.render(film);
 
     return movieController;
   });
 };
-
 
 export default class PageController {
   constructor(container, movieModel, api) {
@@ -47,7 +47,7 @@ export default class PageController {
     this._movies = null;
     this.isHide = false;
 
-    this.api = api;
+    this._api = api;
 
     this._container = container;
     this._sortComponent = new Sort();
@@ -84,7 +84,7 @@ export default class PageController {
       return;
     }
 
-    const filmControllers = renderFilms(this._filmContainer, this._movies.slice(0, this._currentFilmsRendered), this._onDataChange, this._onViewChange);
+    const filmControllers = renderFilms(this._filmContainer, this._movies.slice(0, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
     this._showedFilms = this._showedFilms.concat(filmControllers);
   }
 
@@ -137,8 +137,8 @@ export default class PageController {
 
   _onDataChange(filmController, oldData, newData) {
     const movieId = oldData.item;
-
-    this.api.updateMovie(movieId, newData)
+    const newMovie = MovieAdapter.toRaw(newData);
+    this._api.updateMovie(movieId, newMovie)
     .then((updatedData) => {
       const isOldData = this._moviesModel.updateMovie(movieId, updatedData);
       if (isOldData) {

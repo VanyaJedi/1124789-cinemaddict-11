@@ -2,69 +2,66 @@
 import moment from "moment";
 
 export default class MovieAdapter {
-  constructor(movie, comment) {
-    this._movie = movie;
-    this._comment = comment;
-  }
-
-  adaptAndReturnData() {
-    return {
-      item: this._movie.id,
-      poster: this._movie.film_info.poster,
-      name: this._movie.film_info.title,
-      originalName: this._movie.film_info.alternative_title,
-      rate: this._movie.film_info.total_rating,
-      director: this._movie.film_info.director,
-      authors: this._movie.film_info.writers,
-      actors: this._movie.film_info.actors,
-      releaseDate: {
-        date: this._movie.film_info.release.date,
-        day: moment(this._movie.film_info.release.date).format(`DD`),
-        month: moment(this._movie.film_info.release.date).format(`MMMM`),
-        year: moment(this._movie.film_info.release.date).format(`YYYY`)
-      },
-      rawDuration: this._movie.film_info.runtime,
-      duration: `${moment.utc().startOf(`day`).add({minutes: this._movie.film_info.runtime}).format(`H`)}h ${moment.utc().startOf(`day`).add({minutes: this._movie.film_info.runtime}).format(`mm`)}m`,
-      country: this._movie.film_info.release.release_country,
-      genres: this._movie.film_info.genre,
-      desc: this._movie.film_info.description,
-      comments: this._comment,
-      ageRate: this._movie.film_info.age_rating,
-      addToWatchlist: this._movie.user_details.watchlist,
-      watched: this._movie.user_details.already_watched,
-      favourites: this._movie.user_details.favorite,
-      watchingDate: this._movie.user_details.watching_date
+  constructor(movie) {
+    this.item = movie.id;
+    this.poster = movie.film_info.poster;
+    this.name = movie.film_info.title;
+    this.originalName = movie.film_info.alternative_title;
+    this.rate = movie.film_info.total_rating;
+    this.director = movie.film_info.director;
+    this.authors = movie.film_info.writers;
+    this.actors = movie.film_info.actors;
+    this.releaseDate = {
+      date: movie.film_info.release.date,
+      day: moment(movie.film_info.release.date).format(`DD`),
+      month: moment(movie.film_info.release.date).format(`MMMM`),
+      year: moment(movie.film_info.release.date).format(`YYYY`)
     };
+    this.rawDuration = movie.film_info.runtime;
+    this.duration = `${moment.utc().startOf(`day`).add({minutes: movie.film_info.runtime}).format(`H`)}h ${moment.utc().startOf(`day`).add({minutes: movie.film_info.runtime}).format(`mm`)}m`;
+    this.country = movie.film_info.release.release_country;
+    this.genres = movie.film_info.genre;
+    this.desc = movie.film_info.description;
+    this.comments = movie.comments;
+    this.ageRate = movie.film_info.age_rating;
+    this.addToWatchlist = movie.user_details.watchlist;
+    this.watched = movie.user_details.already_watched;
+    this.favourites = movie.user_details.favorite;
+    this.watchingDate = movie.user_details.watching_date;
   }
 
-  adaptMovieToRawAndReturn(movie) {
+  static toRaw(data) {
     return {
-      id: movie.item,
-      film_info: {
-        actors: movie.actors,
-        age_rating: movie.ageRate,
-        alternative_title: movie.originalName,
-        description: movie.desc,
-        director: movie.director,
-        genre: movie.genres,
-        poster: movie.poster,
-        release: {
-          date: movie.releaseDate.date,
-          release_country: movie.country
+      "id": data.item,
+      "film_info": {
+        "actors": data.actors,
+        "age_rating": data.ageRate,
+        "alternative_title": data.originalName,
+        "description": data.desc,
+        "director": data.director,
+        "genre": data.genres,
+        "poster": data.poster,
+        "release": {
+          "date": data.releaseDate.date,
+          "release_country": data.country
         },
-        runtime: movie.rawDuration,
-        title: movie.name,
-        total_rating: movie.rate,
-        writers: movie.authors
+        "runtime": data.rawDuration,
+        "title": data.name,
+        "total_rating": data.rate,
+        "writers": data.authors
       },
-      user_details: {
-        already_watched: movie.watched,
-        favorite: movie.favourites,
-        watching_date: movie.watchingDate,
-        watchlist: movie.addToWatchlist
+      "user_details": {
+        "already_watched": data.watched,
+        "favorite": data.favourites,
+        "watching_date": data.watchingDate,
+        "watchlist": data.addToWatchlist
       },
-      comments: movie.comments.map((it) => it.id)
+      "comments": data.comments
     };
+  }
+
+  static parseMovie(movie) {
+    return new MovieAdapter(movie);
   }
 
 }

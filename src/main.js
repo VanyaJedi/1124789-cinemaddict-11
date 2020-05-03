@@ -5,7 +5,6 @@ const FILM_COUNT = 23;
 const films = [];
 
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
-const AUTH = `Basic kTy9gIdsz2317rD`;
 
 import {render, replace, remove} from "./util/manipulateDOM.js";
 import Loading from "./components/loading.js";
