@@ -3,6 +3,8 @@ import {render, replace} from "../util/manipulateDOM.js";
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
+import {filterChartTypes, getMoviesForChart} from "../util/filter.js";
+
 const BAR_HEIGHT = 50;
 
 export default class StatController {
@@ -16,6 +18,11 @@ export default class StatController {
     this._genresCount = [];
 
     this._stateComponent = null;
+
+    this._chartFilter = filterChartTypes.ALL;
+    this._chart = null;
+
+    this.updateChart = this.updateChart.bind(this);
   }
 
   render() {
@@ -32,6 +39,7 @@ export default class StatController {
     this._movies = this._moviesModel.getAllMovies();
     this.render();
     this.createChart();
+    this._stateComponent.setFilterHandlers(this.updateChart);
     this._stateComponent.show();
   }
 
@@ -42,7 +50,8 @@ export default class StatController {
   _getAllGenres() {
     this._allGenresArray = [];
     this._genresCount = [];
-    this._movies.filter((movie) => movie.watched).forEach((movie) => {
+    const moviesFiltered = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
+    moviesFiltered.forEach((movie) => {
       movie.genres.forEach((genre) => {
         if (!this._allGenresArray.includes(genre)) {
           this._allGenresArray.push(genre);
@@ -117,6 +126,17 @@ export default class StatController {
         }
       }
     });
+
+    this._chart = myChart;
+  }
+
+  updateChart(evt) {
+    const filterType = evt.target.value;
+    this._chartFilter = filterType;
+    this._getAllGenres();
+    this._chart.data.datasets[0].data = this._genresCount;
+    this._chart.data.labels = this._allGenresArray;
+    this._chart.update();
   }
 
 }

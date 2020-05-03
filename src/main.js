@@ -4,6 +4,7 @@ const footerElem = document.querySelector(`.footer`);
 const FILM_COUNT = 23;
 const films = [];
 
+import moment from "moment";
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 import {render, replace, remove} from "./util/manipulateDOM.js";
@@ -25,7 +26,6 @@ for (let i = 0; i < FILM_COUNT; i++) {
 const api = new API(END_POINT);
 
 const moviesModel = new Movies();
-const userProfile = new UserProfile();
 const content = new Content();
 
 const pageController = new PageController(content, moviesModel, api);
@@ -43,6 +43,7 @@ const renderContent = () => {
   const statistics = new Statistics(moviesModel);
   replace(statistics, statisticsEmpty);
   const statController = new StatController(mainElem, moviesModel);
+  const userProfile = new UserProfile(moviesModel);
   render(headerElem, userProfile);
   filterController.updateComponent(moviesModel);
   pageController.renderSort();
@@ -67,4 +68,5 @@ api.getMovies()
   moviesModel.setMovies(movies);
   renderContent();
 });
+
 

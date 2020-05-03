@@ -105,7 +105,7 @@ export default class PageController {
       const prevFilmsRendered = this._currentFilmsRendered;
       this._currentFilmsRendered += FILM_COUNT_SHOW;
 
-      const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange);
+      const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
       this._showedFilms = this._showedFilms.concat(filmSortedControllers);
 
       if (this._currentFilmsRendered >= this._movies.length) {

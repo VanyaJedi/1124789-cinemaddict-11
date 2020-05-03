@@ -10,8 +10,6 @@ export default class API {
 
   constructor(endPoint) {
     this._endPoint = endPoint;
-    this._movies = [];
-    this._comments = [];
   }
 
   _load({url, method = `GET`, body = null, headers = new Headers()}, auth) {

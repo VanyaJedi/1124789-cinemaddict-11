@@ -1,9 +1,11 @@
 import AbstractComponent from "./abstractComponent.js";
 import moment from "moment";
+import {getProfileRating} from "../util/other.js";
 
 const createStatTemplate = function (movies) {
   const moviesWatched = movies.filter((movie) => movie.watched);
   const moviesWatchedLength = moviesWatched.filter((movie) => movie.watched).length;
+  const ProfileRating = getProfileRating(moviesWatchedLength);
   const totalDuration = moviesWatched.reduce((prev, curr) => {
     prev += curr.rawDuration;
     return prev;
@@ -14,7 +16,7 @@ const createStatTemplate = function (movies) {
       <p class="statistic__rank">
         Your rank
         <img class="statistic__img" src="images/bitmap@2x.png" alt="Avatar" width="35" height="35">
-        <span class="statistic__rank-label">Sci-Fighter</span>
+        <span class="statistic__rank-label">${ProfileRating}</span>
       </p>
 
       <form action="https://echo.htmlacademy.ru/" method="get" class="statistic__filters">
@@ -67,5 +69,12 @@ export default class Stat extends AbstractComponent {
 
   getTemplate() {
     return createStatTemplate(this._movies);
+  }
+
+  setFilterHandlers(handler) {
+    const filtersInput = this._element.querySelectorAll(`.statistic__filters-input`);
+    Array.from(filtersInput).forEach((input) => {
+      input.addEventListener(`change`, handler);
+    });
   }
 }
