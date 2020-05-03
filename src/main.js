@@ -4,7 +4,6 @@ const footerElem = document.querySelector(`.footer`);
 const FILM_COUNT = 23;
 const films = [];
 
-import moment from "moment";
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
 import {render, replace, remove} from "./util/manipulateDOM.js";
