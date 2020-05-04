@@ -1,8 +1,6 @@
 const headerElem = document.querySelector(`.header`);
 const mainElem = document.querySelector(`.main`);
 const footerElem = document.querySelector(`.footer`);
-const FILM_COUNT = 23;
-const films = [];
 
 const END_POINT = `https://11.ecmascript.pages.academy/cinemaddict`;
 
@@ -11,16 +9,11 @@ import Loading from "./components/loading.js";
 import Content from "./components/content.js";
 import Statistics from "./components/statisctics.js";
 import UserProfile from "./components/userProfile.js";
-import {generateFilmCard} from "./mock/testData.js";
 import PageController from "./controllers/pageController.js";
 import FilterController from "./controllers/filterController.js";
 import StatController from "./controllers/statController";
 import Movies from "./models/movies.js";
 import API from "./api.js";
-
-for (let i = 0; i < FILM_COUNT; i++) {
-  films.push(generateFilmCard(i));
-}
 
 const api = new API(END_POINT);
 

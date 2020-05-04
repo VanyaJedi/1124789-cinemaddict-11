@@ -17,7 +17,14 @@ const getSortedFilms = (filmsArray, sortType, from, to) => {
 
   switch (sortType) {
     case sortTypes.BY_DATE:
-      showingFilms.sort((a, b) => b.releaseDate.date - a.releaseDate.date);
+      showingFilms.sort((a, b) => {
+        if (b.releaseDate.date < a.releaseDate.date) {
+          return -1;
+        } else if (b.releaseDate.date > a.releaseDate.date) {
+          return 1;
+        }
+        return 0;
+      });
       break;
     case sortTypes.BY_RATE:
       showingFilms.sort((a, b) => b.rate - a.rate);
@@ -97,14 +104,12 @@ export default class PageController {
   }
 
   renderShowMoreBtn() {
-    let sortedFilms = this._movies.slice();
     const filmsList = this._container.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreBtnComponent);
-
     this._showMoreBtnComponent.setClickHandler(() => {
+      const sortedFilms = this._movies.slice();
       const prevFilmsRendered = this._currentFilmsRendered;
       this._currentFilmsRendered += FILM_COUNT_SHOW;
-
       const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
       this._showedFilms = this._showedFilms.concat(filmSortedControllers);
 
@@ -120,8 +125,8 @@ export default class PageController {
   }
 
   _changeSortHandler(sortType) {
-    const movies = this._moviesModel.getMovies();
-    const sortedFilmsArray = getSortedFilms(movies, sortType, 0, this._currentFilmsRendered);
+    this._movies = getSortedFilms(this._movies, sortType, 0, this._movies.length);
+    const sortedFilmsArray = getSortedFilms(this._movies, sortType, 0, this._currentFilmsRendered);
     this._filmContainer.innerHTML = ``;
     renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange);
   }
