@@ -52,6 +52,9 @@ export default class PageController {
     this._moviesModel = movieModel;
     this._showedFilms = [];
     this._movies = null;
+    this._sortedMovies = null;
+    this._sortType = sortTypes.DEFAULT;
+
     this.isHide = false;
 
     this._api = api;
@@ -86,12 +89,13 @@ export default class PageController {
 
   render() {
     this._movies = this._moviesModel.getMovies();
+    this._sortedMovies = getSortedFilms(this._movies, this._sortType, 0, this._movies.length);
 
     if (this._whenNoFilms()) {
       return;
     }
 
-    const filmControllers = renderFilms(this._filmContainer, this._movies.slice(0, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
+    const filmControllers = renderFilms(this._filmContainer, this._sortedMovies.slice(0, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
     this._showedFilms = this._showedFilms.concat(filmControllers);
   }
 
@@ -125,10 +129,15 @@ export default class PageController {
   }
 
   _changeSortHandler(sortType) {
-    this._movies = getSortedFilms(this._movies, sortType, 0, this._movies.length);
-    const sortedFilmsArray = getSortedFilms(this._movies, sortType, 0, this._currentFilmsRendered);
-    this._filmContainer.innerHTML = ``;
-    renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange);
+    this._sortType = sortType;
+    this._sortedMovies = getSortedFilms(this._movies, this._sortType, 0, this._movies.length);
+    const sortedFilmsArray = this._sortedMovies.slice(0, this._currentFilmsRendered);
+    this._removeMovies();
+    const filmSortedControllers = renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange, this._api);
+    this._showedFilms = this._showedFilms.concat(filmSortedControllers);
+    if (this._sortedMovies.length >= this._currentFilmsRendered) {
+      this.renderShowMoreBtn();
+    }
   }
 
   _whenNoFilms() {
@@ -168,7 +177,7 @@ export default class PageController {
   _updateMovies() {
     this._removeMovies();
     this.render();
-    if (this._movies.length >= this._currentFilmsRendered) {
+    if (this._movies.length > this._currentFilmsRendered) {
       this.renderShowMoreBtn();
     }
   }
