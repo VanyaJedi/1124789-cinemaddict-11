@@ -68,7 +68,6 @@ export default class StatController {
     const allGenres = this._allGenresArray;
     const genresCount = this._genresCount;
     const statisticCtx = this._stateComponent._element.querySelector(`.statistic__chart`);
-    // Обязательно рассчитайте высоту canvas, она зависит от количества элементов диаграммы
     statisticCtx.height = BAR_HEIGHT * 5;
     const myChart = new Chart(statisticCtx, {
       plugins: [ChartDataLabels],
