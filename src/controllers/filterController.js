@@ -11,6 +11,8 @@ export default class FilterController {
     this._activeFilterType = `all`;
     this._menuComponent = null;
 
+    this._changeViewHandler = null;
+
     this._onFilterChange = this._onFilterChange.bind(this);
     this._onDataChangeHandler = this._onDataChangeHandler.bind(this);
     this._moviesModel.addDataChangeHandler(this._onDataChangeHandler);
@@ -27,9 +29,14 @@ export default class FilterController {
     }
   }
 
+  updateComponent() {
+    this._onDataChangeHandler();
+  }
+
   _onDataChangeHandler() {
     this._movies = this._moviesModel.getAllMovies();
     this.render();
+    this.setViewChangeHandler(this._changeViewHandler);
   }
 
   _onFilterChange(filterType) {
@@ -37,5 +44,10 @@ export default class FilterController {
     this._activeFilterType = filterType;
   }
 
+  setViewChangeHandler(handler) {
+    this._changeViewHandler = handler;
+    const showStatBtn = this._menuComponent._element.querySelector(`.main-navigation__additional`);
+    showStatBtn.addEventListener(`click`, handler);
+  }
 
 }

@@ -66,6 +66,7 @@ const generateFilmCard = function (address) {
       month: moment(randomDate).format(`MMMM`),
       year: randomDate.getFullYear()
     },
+    rawDuration: filmDuration,
     duration: durationToShow,
     country: getRandomValue(COUNTRIES),
     genres: GENRES,
