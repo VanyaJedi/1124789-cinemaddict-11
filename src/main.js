@@ -57,7 +57,6 @@ const renderContent = () => {
 
 api.getMovies()
 .then((movies) => {
-  console.log(movies);
   moviesModel.setMovies(movies);
   renderContent();
 });
