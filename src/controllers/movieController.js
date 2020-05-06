@@ -62,6 +62,7 @@ export default class MovieController {
     if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
       this._api.getComments(this._filmData.item)
         .then((parsedComments) => {
+          console.log(parsedComments);
           this._filmComments = parsedComments;
           this._filmPopupComponent = new FilmPopup(this._filmData, this._filmComments);
           this._onViewChange();
@@ -85,23 +86,41 @@ export default class MovieController {
 
           this._filmPopupComponent.setEmojiClickHandler((smileEvt) => {
             const encodeMessage = encode(this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value);
-            const commentObject = {
+            /*const commentObject = {
               item: this._filmData.comments.length,
               smile: `${smileEvt.target.value}.png`,
               user: `random from server`,
               message: encodeMessage,
               date: new Date()
+            };*/
+            const commentObject = {
+              comment: encodeMessage,
+              date: new Date(),
+              emotion: smileEvt.target.value
             };
-            this._filmData.comments.push(commentObject);
-            this._filmPopupComponent.rerender();
+
+            this._api.addComment(this._filmData.item, commentObject)
+              .then((comments) => {
+
+                console.log(this._filmData.item);
+                this._filmData.comments = comments;
+                this._filmPopupComponent.rerender();
+              });
+
+            //this._filmData.comments.push(commentObject);
+
           });
 
           this._filmPopupComponent.setDeleteCommentHandler((btnEvt) => {
             btnEvt.preventDefault();
             const commentAddress = btnEvt.target.dataset.address;
-            const indexComment = this._filmData.comments.findIndex((it) => parseInt(it.item, 10) === parseInt(commentAddress, 10));
-            this._filmData.comments.splice(indexComment, 1);
-            this._filmPopupComponent.rerender();
+            this._api.deleteComment(commentAddress)
+              .then((comment) => {
+                console.log(comment)
+                const indexComment = this._filmData.comments.findIndex((it) => parseInt(it.item, 10) === parseInt(commentAddress, 10));
+                this._filmData.comments.splice(indexComment, 1);
+                this._filmPopupComponent.rerender();
+              });
           });
 
 

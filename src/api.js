@@ -66,4 +66,24 @@ export default class API {
     .catch(this._onError);
   }
 
+  addComment(id, data) {
+    return this._load({
+      url: `comments/${id}`,
+      method: `POST`,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    }, AUTH_PUT)
+    .then((newComments) => {
+      console.log(newComments);
+      return newComments.comments.map((comment) => commentsAdapter.parseComment(comment));
+    });
+  }
+
+  deleteComment(id) {
+    return this._load({
+      url: `comments/${id}`,
+      method: `DELETE`,
+      headers: new Headers({"Content-Type": `application/json`})
+    }, AUTH_PUT);
+  }
 }

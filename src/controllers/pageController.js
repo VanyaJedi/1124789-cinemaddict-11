@@ -111,7 +111,7 @@ export default class PageController {
     const filmsList = this._container.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreBtnComponent);
     this._showMoreBtnComponent.setClickHandler(() => {
-      const sortedFilms = this._movies.slice();
+      const sortedFilms = this._sortedMovies.slice();
       const prevFilmsRendered = this._currentFilmsRendered;
       this._currentFilmsRendered += FILM_COUNT_SHOW;
       const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
