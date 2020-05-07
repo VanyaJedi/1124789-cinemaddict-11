@@ -41,7 +41,6 @@ const renderFilms = (filmsList, films, onDataChange, onViewChange, api) => {
   return films.map((film) => {
     const movieController = new MovieController(filmsList, onDataChange, onViewChange, api);
     movieController.render(film);
-
     return movieController;
   });
 };
@@ -100,18 +99,30 @@ export default class PageController {
   }
 
   renderTopAndMostCommented() {
-    const topRated = new TopRated(this._movies);
-    const mostCommented = new MostCommented(this._movies);
     const filmsSection = this._container.getElement();
+    this._allMovies = this._moviesModel.getAllMovies();
+    const topRatedMovies = this._allMovies.slice()
+                                          .sort((a, b) => (b.rate - a.rate))
+                                          .slice(0, 2);
+    const MostCommentedMovies = this._allMovies.slice()
+                                                .sort((a, b) => (b.comments.length - a.comments.length))
+                                                .slice(0, 2);
+    const topRated = new TopRated();
+    const mostCommented = new MostCommented();
+    const topRatedContainer = topRated.getContainer();
+    const mostCommentedContainer = mostCommented.getContainer();
     render(filmsSection, topRated);
     render(filmsSection, mostCommented);
+    renderFilms(topRatedContainer, topRatedMovies, this._onDataChange, this._onViewChange, this._api);
+    renderFilms(mostCommentedContainer, MostCommentedMovies, this._onDataChange, this._onViewChange, this._api);
   }
+
 
   renderShowMoreBtn() {
     const filmsList = this._container.getElement().querySelector(`.films-list`);
     render(filmsList, this._showMoreBtnComponent);
     this._showMoreBtnComponent.setClickHandler(() => {
-      const sortedFilms = this._movies.slice();
+      const sortedFilms = this._sortedMovies.slice();
       const prevFilmsRendered = this._currentFilmsRendered;
       this._currentFilmsRendered += FILM_COUNT_SHOW;
       const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
@@ -156,8 +167,8 @@ export default class PageController {
     .then((updatedData) => {
       const isOldData = this._moviesModel.updateMovie(movieId, updatedData);
       if (isOldData) {
-
         filmController.render(newData);
+        filmController.updatePopup(newData);
       }
     });
   }

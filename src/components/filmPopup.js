@@ -2,6 +2,8 @@
 import AbstractSmartComponent from "./abstractSmartComponent.js";
 import moment from "moment";
 
+const SHAKE_ANIMATION_TIMEOUT = 600;
+
 const createGenresList = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span> `;
@@ -174,6 +176,10 @@ export default class FilmPopup extends AbstractSmartComponent {
     return createFilmPopupTemplate(this._film, this._comments);
   }
 
+  setNewFilmData(film) {
+    this._film = film;
+  }
+
   recoveryListeners() {
     this._subscribeEventListeners();
   }
@@ -221,6 +227,41 @@ export default class FilmPopup extends AbstractSmartComponent {
     Array.from(comments).forEach((deleteBtn) => {
       deleteBtn.addEventListener(`click`, handler);
     });
+  }
+
+  disableForm() {
+    const inputField = this.getElement().querySelector(`.film-details__comment-input`);
+    inputField.disabled = true;
+  }
+
+  enableForm() {
+    const inputField = this.getElement().querySelector(`.film-details__comment-input`);
+    inputField.disabled = false;
+  }
+
+  addWrongInputEffect() {
+    const inputField = this.getElement().querySelector(`.film-details__comment-input`);
+    inputField.classList.add(`wrong-input`);
+  }
+
+  removeWrongInputEffect() {
+    const inputField = this.getElement().querySelector(`.film-details__comment-input`);
+    inputField.classList.remove(`wrong-input`);
+  }
+
+  shakePopup() {
+    this.getElement().classList.add(`shake`);
+
+    setTimeout(() => {
+      this.getElement().classList.remove(`shake`);
+    }, SHAKE_ANIMATION_TIMEOUT);
+  }
+
+  shakeComment(evt) {
+    evt.target.closest(`div`).classList.add(`shake`);
+    setTimeout(() => {
+      evt.target.closest(`div`).classList.remove(`shake`);
+    }, SHAKE_ANIMATION_TIMEOUT);
   }
 
   _subscribeEventListeners() {
