@@ -105,7 +105,7 @@ export default class MovieController {
                 this._filmPopupComponent.rerender();
               })
               .catch(()=>{
-                this._filmPopupComponent.undisableForm();
+                this._filmPopupComponent.enableForm();
                 this._filmPopupComponent.addWrongInputEffect();
                 this._filmPopupComponent.shakePopup();
               });

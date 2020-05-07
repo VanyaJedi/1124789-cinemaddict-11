@@ -83,7 +83,7 @@ export default class API {
 
   deleteComment(id) {
     return this._load({
-      url: `commentss/${id}`,
+      url: `comments/${id}`,
       method: `DELETE`,
       headers: new Headers({"Content-Type": `application/json`})
     }, AUTH_PUT);

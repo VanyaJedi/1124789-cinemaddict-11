@@ -234,7 +234,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     inputField.disabled = true;
   }
 
-  undisableForm() {
+  enableForm() {
     const inputField = this.getElement().querySelector(`.film-details__comment-input`);
     inputField.disabled = false;
   }
