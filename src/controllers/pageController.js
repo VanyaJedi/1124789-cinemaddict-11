@@ -172,7 +172,7 @@ export default class PageController {
       const sortedFilms = this._sortedMovies.slice();
       const prevFilmsRendered = this._currentFilmsRendered;
       this._currentFilmsRendered += FILM_COUNT_SHOW;
-      const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api);
+      const filmSortedControllers = renderFilms(this._filmContainer, sortedFilms.slice(prevFilmsRendered, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api, this._updateAllFilms);
       this._showedFilms = this._showedFilms.concat(filmSortedControllers);
 
       if (this._currentFilmsRendered >= this._movies.length) {
@@ -191,7 +191,7 @@ export default class PageController {
     this._sortedMovies = getSortedFilms(this._movies, this._sortType, 0, this._movies.length);
     const sortedFilmsArray = this._sortedMovies.slice(0, this._currentFilmsRendered);
     this._removeMovies();
-    const filmSortedControllers = renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange, this._api);
+    const filmSortedControllers = renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange, this._api, this._updateAllFilms);
     this._showedFilms = this._showedFilms.concat(filmSortedControllers);
     if (this._sortedMovies.length > this._currentFilmsRendered) {
       this.renderShowMoreBtn();
