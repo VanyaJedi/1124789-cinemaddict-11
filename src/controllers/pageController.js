@@ -1,5 +1,5 @@
 import {render, remove} from "../util/manipulateDOM.js";
-import {sortTypes} from "../util.js";
+import {sortTypes} from "../util/other.js";
 import ShowMoreBtn from "../components/showMoreBtn.js";
 import TopRated from "../components/topRated.js";
 import MostCommented from "../components/mostCommented.js";
@@ -106,11 +106,11 @@ export default class PageController {
   renderTopAndMostCommented() {
     this._allMovies = this._moviesModel.getAllMovies();
 
-    this.renderTopRaited();
+    this.renderTopRated();
     this.renderMostCommented();
   }
 
-  renderTopRaited() {
+  renderTopRated() {
     this._allMovies = this._moviesModel.getAllMovies();
     const commonRating = this._allMovies.reduce((acc, movie) => {
       acc += movie.rate;
@@ -156,7 +156,7 @@ export default class PageController {
   rerenderTopAndMostCommented() {
     if (this._topRatedComponent) {
       this._topRatedMovies.forEach((movie) => movie.destroy());
-      this.renderTopRaited();
+      this.renderTopRated();
     }
     if (this._mostCommentedComponent) {
       this._mostCommentedMovies.forEach((movie) => movie.destroy());

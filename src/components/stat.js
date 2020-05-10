@@ -1,47 +1,31 @@
 import AbstractComponent from "./abstractComponent.js";
 import moment from "moment";
-import {getProfileRating} from "../util/other.js";
+import {getProfileRating, generateGenresObject} from "../util/other.js";
 
 const getTopGenre = (movies) => {
-  const genres = [];
-  const allGenresArray = [];
-  const genresCount = [];
-  movies.forEach((movie) => {
-    movie.genres.forEach((genre) => {
-      if (!allGenresArray.includes(genre)) {
-        allGenresArray.push(genre);
-        genresCount.push(1);
-      } else {
-        genresCount[allGenresArray.indexOf(genre)]++;
-      }
-    });
-  });
-  for (let i = 0; i < allGenresArray.length; i++) {
-    let genre = allGenresArray[i];
-    let genreCount = genresCount[i];
-    let objToPush = {
-      genre,
-      genreCount
-    };
-    genres.push(objToPush);
-  }
-  if (genres.length) {
-    const topGenre = genres.sort((a, b) => b.genreCount - a.genreCount)[0].genre;
-    return topGenre;
-  }
-  return ``;
+  const genreCountObject = generateGenresObject(movies);
+  let topGenreName = ``;
+  let topGenreMax = -1;
 
+  Object.entries(genreCountObject).forEach(([key, value]) => {
+    if (value > topGenreMax) {
+      topGenreName = key;
+      topGenreMax = value;
+    }
+  });
+  return topGenreName;
 };
 
 const createStatTemplate = function (movies) {
   const moviesWatched = movies.filter((movie) => movie.watched);
-  const moviesWatchedLength = moviesWatched.filter((movie) => movie.watched).length;
+  const moviesWatchedLength = moviesWatched.length;
   const ProfileRating = getProfileRating(moviesWatchedLength);
   const totalDuration = moviesWatched.reduce((prev, curr) => {
     prev += curr.rawDuration;
     return prev;
   }, 0);
-  const topGenre = getTopGenre(movies);
+
+  const topGenre = getTopGenre(moviesWatched);
 
   return (
     `<section class="statistic visually-hidden">
@@ -111,14 +95,13 @@ export default class Stat extends AbstractComponent {
   }
 
   updateMoviesData(movies) {
-    getTopGenre(movies);
     const moviesWatched = movies.filter((movie) => movie.watched);
-    const moviesWatchedLength = moviesWatched.filter((movie) => movie.watched).length;
+    const moviesWatchedLength = moviesWatched.length;
     const totalDuration = moviesWatched.reduce((prev, curr) => {
       prev += curr.rawDuration;
       return prev;
     }, 0);
-    const topGenre = getTopGenre(movies);
+    const topGenre = getTopGenre(moviesWatched);
 
     this.getElement().querySelector(`.statistic__item-length`).innerText = moviesWatchedLength;
     this.getElement().querySelector(`.statistic__item-duration`).innerHTML = `${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)}`;
