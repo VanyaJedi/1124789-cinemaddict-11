@@ -46,4 +46,12 @@ export default class Sort extends AbstractComponent {
 
     });
   }
+
+  setDefaultSortActive() {
+    if (this._currentSort === `DEFAULT`) {
+      return;
+    }
+    this._removeActiveBtnClass();
+    this.getElement().querySelector(`a[data-sort-type=${sortTypes.DEFAULT}]`).classList.add(`sort__button--active`);
+  }
 }

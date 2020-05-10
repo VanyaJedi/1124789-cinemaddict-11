@@ -76,6 +76,7 @@ const renderContent = () => {
       statController.hide();
     } else {
       pageController.hide();
+      pageController.setDefaultSort();
       statController.show();
     }
   });
