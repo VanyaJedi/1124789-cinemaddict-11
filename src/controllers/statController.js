@@ -13,6 +13,7 @@ export default class StatController {
     this._container = container;
     this._moviesModel = moviesModel;
     this._movies = moviesModel.getAllMovies();
+    this._filteredMovies = moviesModel.getAllMovies();
 
     this._allGenresArray = [];
     this._genresCount = [];
@@ -27,7 +28,7 @@ export default class StatController {
 
   render() {
     const oldStateComponent = this._stateComponent;
-    this._stateComponent = new Stat(this._movies);
+    this._stateComponent = new Stat(this._filteredMovies);
     if (!oldStateComponent) {
       render(this._container, this._stateComponent);
     } else {
@@ -50,8 +51,8 @@ export default class StatController {
   _getAllGenres() {
     this._allGenresArray = [];
     this._genresCount = [];
-    const moviesFiltered = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
-    moviesFiltered.forEach((movie) => {
+    this._filteredMovies = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
+    this._filteredMovies.forEach((movie) => {
       movie.genres.forEach((genre) => {
         if (!this._allGenresArray.includes(genre)) {
           this._allGenresArray.push(genre);
@@ -136,6 +137,8 @@ export default class StatController {
     this._chart.data.datasets[0].data = this._genresCount;
     this._chart.data.labels = this._allGenresArray;
     this._chart.update();
+    this._stateComponent.updateMoviesData(this._filteredMovies);
+
   }
 
 }
