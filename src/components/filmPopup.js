@@ -22,7 +22,7 @@ const createCommentList = (comments) => {
           <p class="film-details__comment-text">${comment.message}</p>
           <p class="film-details__comment-info">
             <span class="film-details__comment-author">${comment.user}</span>
-            <span class="film-details__comment-day">${moment(comment.date).locale(`ru`).format(`YYYY/MM/DD HH:SS`)}</span>
+            <span class="film-details__comment-day">${moment(comment.date).fromNow()}</span>
             <button data-address=${comment.item} class="film-details__comment-delete">Delete</button>
           </p>
         </div>

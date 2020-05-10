@@ -1,6 +1,6 @@
 
-import MovieAdapter from "./models/moviesAdapter.js";
-import commentsAdapter from "./models/commentsAdapter.js";
+import MovieAdapter from "../models/moviesAdapter.js";
+import commentsAdapter from "../models/commentsAdapter.js";
 
 const AUTH_PUT = `Basic er883jdzbdw`;
 
@@ -87,5 +87,15 @@ export default class API {
       method: `DELETE`,
       headers: new Headers({"Content-Type": `application/json`})
     }, AUTH_PUT);
+  }
+
+  sync(data) {
+    return this._load({
+      url: `movies/sync`,
+      method: `POST`,
+      body: JSON.stringify(data),
+      headers: new Headers({"Content-Type": `application/json`})
+    }, AUTH_PUT)
+    .then((response) => response.json());
   }
 }

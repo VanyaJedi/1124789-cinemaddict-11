@@ -1,15 +1,31 @@
 import AbstractComponent from "./abstractComponent.js";
 import moment from "moment";
-import {getProfileRating} from "../util/other.js";
+import {getProfileRating, generateGenresObject} from "../util/other.js";
+
+const getTopGenre = (movies) => {
+  const genreCountObject = generateGenresObject(movies);
+  let topGenreName = ``;
+  let topGenreMax = -1;
+
+  Object.entries(genreCountObject).forEach(([key, value]) => {
+    if (value > topGenreMax) {
+      topGenreName = key;
+      topGenreMax = value;
+    }
+  });
+  return topGenreName;
+};
 
 const createStatTemplate = function (movies) {
   const moviesWatched = movies.filter((movie) => movie.watched);
-  const moviesWatchedLength = moviesWatched.filter((movie) => movie.watched).length;
+  const moviesWatchedLength = moviesWatched.length;
   const ProfileRating = getProfileRating(moviesWatchedLength);
   const totalDuration = moviesWatched.reduce((prev, curr) => {
     prev += curr.rawDuration;
     return prev;
   }, 0);
+
+  const topGenre = getTopGenre(moviesWatched);
 
   return (
     `<section class="statistic visually-hidden">
@@ -41,15 +57,15 @@ const createStatTemplate = function (movies) {
       <ul class="statistic__text-list">
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">You watched</h4>
-          <p class="statistic__item-text">${moviesWatchedLength}<span class="statistic__item-description">movies</span></p>
+          <p class="statistic__item-text statistic__item-length">${moviesWatchedLength}<span class="statistic__item-description">movies</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text">${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)} <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text statistic__item-duration">${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)} <span class="statistic__item-description">m</span></p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
-          <p class="statistic__item-text">Sci-Fi</p>
+          <p class="statistic__item-text statistic__item-top-genre">${topGenre}</p>
         </li>
       </ul>
 
@@ -76,5 +92,19 @@ export default class Stat extends AbstractComponent {
     Array.from(filtersInput).forEach((input) => {
       input.addEventListener(`change`, handler);
     });
+  }
+
+  updateMoviesData(movies) {
+    const moviesWatched = movies.filter((movie) => movie.watched);
+    const moviesWatchedLength = moviesWatched.length;
+    const totalDuration = moviesWatched.reduce((prev, curr) => {
+      prev += curr.rawDuration;
+      return prev;
+    }, 0);
+    const topGenre = getTopGenre(moviesWatched);
+
+    this.getElement().querySelector(`.statistic__item-length`).innerText = moviesWatchedLength;
+    this.getElement().querySelector(`.statistic__item-duration`).innerHTML = `${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)}`;
+    this.getElement().querySelector(`.statistic__item-top-genre`).innerText = topGenre;
   }
 }

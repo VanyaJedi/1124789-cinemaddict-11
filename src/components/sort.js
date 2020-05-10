@@ -1,5 +1,5 @@
 import AbstractComponent from "./abstractComponent.js";
-import {sortTypes} from "../util.js";
+import {sortTypes} from "../util/other.js";
 
 export default class Sort extends AbstractComponent {
 
@@ -45,5 +45,13 @@ export default class Sort extends AbstractComponent {
       }
 
     });
+  }
+
+  setDefaultSortActive() {
+    if (this._currentSort === `DEFAULT`) {
+      return;
+    }
+    this._removeActiveBtnClass();
+    this.getElement().querySelector(`a[data-sort-type=${sortTypes.DEFAULT}]`).classList.add(`sort__button--active`);
   }
 }
