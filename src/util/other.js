@@ -1,18 +1,24 @@
 
+const ProfileRang = {
+  NOVICE: `novice`,
+  FAN: `fan`,
+  MOVIEBUFF: `movie buff`
+};
+
 
 export const getProfileRating = function (len) {
   if (len === 0) {
     return ``;
   } else if (len < 11) {
-    return `novice`;
+    return ProfileRang.NOVICE;
   } else if (len < 21) {
-    return `fan`;
+    return ProfileRang.FAN;
   }
 
-  return `movie buff`;
+  return ProfileRang.MOVIEBUFF;
 };
 
-export const sortTypes = {
+export const SortType = {
   BY_DATE: `date`,
   BY_RATE: `rate`,
   DEFAULT: `default`,

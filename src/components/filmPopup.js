@@ -1,6 +1,7 @@
 
 import AbstractSmartComponent from "./abstractSmartComponent.js";
 import moment from "moment";
+import {createElement} from "../util/manipulateDOM.js";
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
@@ -164,12 +165,18 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._film = film;
     this._comments = comments;
 
+    this._oldEmojiElement = null;
+    this._emojiElement = null;
+    this._emojiValue = null;
+
     this._closePopupHandler = null;
     this._addToWatchHandler = null;
     this._addWatchedHandler = null;
     this._addToFavoriteHandler = null;
     this._addEmojiClickHandler = null;
     this._addDeleteCommentHandler = null;
+
+    this.insertEmojiElement = this.insertEmojiElement.bind(this);
   }
 
   getTemplate() {
@@ -181,6 +188,9 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   recoveryListeners() {
+    this._oldEmojiElement = null;
+    this._emojiElement = null;
+    this._emojiValue = null;
     this._subscribeEventListeners();
   }
 
@@ -212,13 +222,37 @@ export default class FilmPopup extends AbstractSmartComponent {
     this.getElement().querySelector(`.film-details__control-label--favorite`).addEventListener(`click`, handler);
   }
 
-  setEmojiClickHandler(handler) {
-    this._addEmojiClickHandler = handler;
+  setEmojiClickHandler() {
     const emojis = this.getElement().querySelectorAll(`.film-details__emoji-item`);
 
     Array.from(emojis).forEach((emoji) => {
-      emoji.addEventListener(`click`, handler);
+      emoji.addEventListener(`click`, this.insertEmojiElement);
     });
+  }
+
+  insertEmojiElement(evt) {
+    this._emojiValue = evt.target.value;
+    this._oldEmojiElement = this._emojiElement;
+    const emojiTemplate = `<img src="images/emoji/${this._emojiValue}.png" width="55" height="55" alt="emoji-smile">`;
+    this._emojiElement = createElement(emojiTemplate);
+    const emojiContainer = this._element.querySelector(`.film-details__add-emoji-label`);
+    if (!this._oldEmojiElement) {
+      emojiContainer.append(this._emojiElement);
+    } else {
+      emojiContainer.replaceChild(this._emojiElement, this._oldEmojiElement);
+    }
+
+  }
+
+  setSendFormHanlder(handler) {
+    this._setSendFormHandler = handler;
+    this.sendFormByBtn = (evt) => {
+      if (evt.key === `Enter` && evt.ctrlKey) {
+        handler();
+      }
+    };
+
+    document.addEventListener(`keydown`, this.sendFormByBtn);
   }
 
   setDeleteCommentHandler(handler) {
@@ -240,13 +274,17 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   addWrongInputEffect() {
+    const emojiField = this.getElement().querySelector(`.film-details__add-emoji-label`);
     const inputField = this.getElement().querySelector(`.film-details__comment-input`);
     inputField.classList.add(`wrong-input`);
+    emojiField.classList.add(`wrong-input`);
   }
 
   removeWrongInputEffect() {
     const inputField = this.getElement().querySelector(`.film-details__comment-input`);
+    const emojiField = this.getElement().querySelector(`.film-details__add-emoji-label`);
     inputField.classList.remove(`wrong-input`);
+    emojiField.classList.remove(`wrong-input`);
   }
 
   shakePopup() {

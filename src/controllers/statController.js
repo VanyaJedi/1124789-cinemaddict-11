@@ -3,7 +3,7 @@ import {render, replace} from "../util/manipulateDOM.js";
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import {filterChartTypes, getMoviesForChart} from "../util/filter.js";
+import {FilterChartType, getMoviesForChart} from "../util/filter.js";
 import {generateGenresObject} from "../util/other.js";
 
 const BAR_HEIGHT = 50;
@@ -23,7 +23,7 @@ export default class StatController {
 
     this._stateComponent = null;
 
-    this._chartFilter = filterChartTypes.ALL;
+    this._chartFilter = FilterChartType.ALL;
     this._chart = null;
 
     this.updateChart = this.updateChart.bind(this);
@@ -56,13 +56,13 @@ export default class StatController {
     this._filteredMovies = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
     this._genreObject = generateGenresObject(this._filteredMovies);
     this._allGenresArray = Object.keys(this._genreObject);
-    this._genresCount = Object.values(this._genreObject);
+    this._genresNumbers = Object.values(this._genreObject);
   }
 
   createChart() {
     this._getAllGenres();
     const allGenres = this._allGenresArray;
-    const genresCount = this._genresCount;
+    const genresNumbers = this._genresNumbers;
     const statisticCtx = this._stateComponent._element.querySelector(`.statistic__chart`);
     statisticCtx.height = BAR_HEIGHT * 5;
     const myChart = new Chart(statisticCtx, {
@@ -71,7 +71,7 @@ export default class StatController {
       data: {
         labels: allGenres,
         datasets: [{
-          data: genresCount,
+          data: genresNumbers,
           backgroundColor: `#ffe800`,
           hoverBackgroundColor: `#ffe800`,
           anchor: `start`,
@@ -129,7 +129,7 @@ export default class StatController {
     const filterType = evt.target.value;
     this._chartFilter = filterType;
     this._getAllGenres();
-    this._chart.data.datasets[0].data = this._genresCount;
+    this._chart.data.datasets[0].data = this._genresNumbers;
     this._chart.data.labels = this._allGenresArray;
     this._chart.update();
     this._stateComponent.updateMoviesData(this._filteredMovies);

@@ -1,12 +1,12 @@
 
-import {filterTypes, getTasksByFilter} from '../util/filter.js';
+import {FilterType, getTasksByFilter} from '../util/filter.js';
 
 export default class Movies {
 
   constructor() {
     this._movies = [];
 
-    this._activeFilterType = filterTypes.ALL;
+    this._activeFilterType = FilterType.ALL;
 
     this._dataChangeHandlers = [];
     this._filterChangeHandlers = [];

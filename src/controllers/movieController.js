@@ -99,12 +99,17 @@ export default class MovieController {
           });
 
           this._filmPopupComponent.setEmojiClickHandler((smileEvt) => {
+            this._filmPopupComponent.insertEmojiElement(smileEvt.target.value);
+          });
+
+          this._filmPopupComponent.setSendFormHanlder(() => {
             this._filmPopupComponent.removeWrongInputEffect();
             const encodeMessage = encode(this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value);
+            const emojiValue = this._filmPopupComponent._emojiValue;
             const commentObject = {
               comment: encodeMessage,
               date: new Date(),
-              emotion: smileEvt.target.value
+              emotion: emojiValue
             };
 
             this._filmPopupComponent.disableForm();
@@ -122,7 +127,6 @@ export default class MovieController {
                 this._filmPopupComponent.addWrongInputEffect();
                 this._filmPopupComponent.shakePopup();
               });
-
           });
 
           this._filmPopupComponent.setDeleteCommentHandler((btnEvt) => {
@@ -139,6 +143,7 @@ export default class MovieController {
                 this._filmData.comments = newParsedComments;
                 this._filmPopupComponent._comments = newParsedComments;
                 this._filmPopupComponent.rerender();
+                this._onCommentsChange();
               })
               .catch(()=>{
                 deleteBtn.disabled = false;
@@ -157,11 +162,11 @@ export default class MovieController {
             if (isEscKey) {
               this._filmPopupComponent.closePopup();
               document.removeEventListener(`keydown`, onEscKeyDownClosePopup);
+              document.removeEventListener(`keydown`, this._filmPopupComponent.sendFormByBtn);
             }
           };
 
           document.addEventListener(`keydown`, onEscKeyDownClosePopup);
-
           this._filmPopupComponent.setCloseBtnHandler(this._filmPopupComponent.closePopup);
         });
 

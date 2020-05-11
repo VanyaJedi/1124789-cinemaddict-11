@@ -2,10 +2,9 @@ import AbstractComponent from "./abstractComponent.js";
 
 export default class FilmCard extends AbstractComponent {
 
-  constructor(film, address) {
+  constructor(film) {
     super();
     this._film = film;
-    this._address = address;
   }
 
   getTemplate() {

@@ -1,3 +1,8 @@
+const PlaceToAppend = {
+  BEFOREEND: `beforeend`,
+  AFTERBEGIN: `afterbegin`
+};
+
 export const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
@@ -5,12 +10,12 @@ export const createElement = (template) => {
   return newElement.firstChild;
 };
 
-export const render = (container, component, place = `beforeend`) => {
+export const render = (container, component, place = PlaceToAppend.BEFOREEND) => {
   switch (place) {
-    case `afterbegin`:
+    case PlaceToAppend.AFTERBEGIN:
       container.prepend(component.getElement());
       break;
-    case `beforeend`:
+    case PlaceToAppend.BEFOREEND:
       container.append(component.getElement());
       break;
   }

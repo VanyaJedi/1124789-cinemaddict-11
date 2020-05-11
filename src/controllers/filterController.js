@@ -1,6 +1,6 @@
 import Menu from "../components/menu.js";
 import {render, replace} from "../util/manipulateDOM.js";
-
+import {FilterType} from "../util/filter.js";
 
 export default class FilterController {
 
@@ -8,7 +8,7 @@ export default class FilterController {
     this._container = container;
     this._moviesModel = moviesModel;
     this._movies = moviesModel.getAllMovies();
-    this._activeFilterType = `all`;
+    this._activeFilterType = FilterType.ALL;
     this._menuComponent = null;
 
     this._changeViewHandler = null;

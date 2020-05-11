@@ -1,14 +1,14 @@
 
 import moment from "moment";
 
-export const filterTypes = {
+export const FilterType = {
   ALL: `all`,
   TO_WATCH: `toWatch`,
   WATCHED: `watched`,
   FAVORITES: `favorites`
 };
 
-export const filterChartTypes = {
+export const FilterChartType = {
   ALL: `all-time`,
   TODAY: `today`,
   WEEK: `week`,
@@ -20,13 +20,13 @@ export const filterChartTypes = {
 export const getTasksByFilter = (movies, filterType) => {
 
   switch (filterType) {
-    case filterTypes.ALL:
+    case FilterType.ALL:
       return movies;
-    case filterTypes.TO_WATCH:
+    case FilterType.TO_WATCH:
       return movies.filter((movie) => movie.addToWatchlist);
-    case filterTypes.WATCHED:
+    case FilterType.WATCHED:
       return movies.filter((movie) => movie.watched);
-    case filterTypes.FAVORITES:
+    case FilterType.FAVORITES:
       return movies.filter((movie) => movie.favourites);
 
   }
@@ -36,21 +36,21 @@ export const getTasksByFilter = (movies, filterType) => {
 export const getMoviesForChart = (movies, filterType) => {
 
   switch (filterType) {
-    case filterChartTypes.ALL:
+    case FilterChartType.ALL:
       return movies;
-    case filterChartTypes.TODAY:
+    case FilterChartType.TODAY:
       return movies.filter((movie) => {
         return moment().diff(movie.watchingDate, `days`) === 0;
       });
-    case filterChartTypes.WEEK:
+    case FilterChartType.WEEK:
       return movies.filter((movie) => {
         return moment().diff(movie.watchingDate, `days`) <= 7;
       });
-    case filterChartTypes.MONTH:
+    case FilterChartType.MONTH:
       return movies.filter((movie) => {
         return moment().diff(movie.watchingDate, `days`) <= 31;
       });
-    case filterChartTypes.YEAR:
+    case FilterChartType.YEAR:
       return movies.filter((movie) => {
         return moment().diff(movie.watchingDate, `days`) <= 364;
       });

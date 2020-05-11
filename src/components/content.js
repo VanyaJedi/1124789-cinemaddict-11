@@ -2,9 +2,8 @@ import AbstractComponent from "./abstractComponent.js";
 
 export default class Content extends AbstractComponent {
 
-  constructor(film) {
+  constructor() {
     super();
-    this._film = film;
   }
 
   getTemplate() {

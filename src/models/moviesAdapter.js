@@ -1,6 +1,15 @@
 
 import moment from "moment";
 
+const MomentFormat = {
+  DD: `DD`,
+  MMMM: `MMMM`,
+  YYYY: `YYYY`,
+  DAY: `day`,
+  H: `H`,
+  MM: `mm`
+};
+
 export default class MovieAdapter {
   constructor(movie) {
     this.item = movie.id;
@@ -13,12 +22,12 @@ export default class MovieAdapter {
     this.actors = movie.film_info.actors;
     this.releaseDate = {
       date: movie.film_info.release.date,
-      day: moment(movie.film_info.release.date).format(`DD`),
-      month: moment(movie.film_info.release.date).format(`MMMM`),
-      year: moment(movie.film_info.release.date).format(`YYYY`)
+      day: moment(movie.film_info.release.date).format(MomentFormat.DD),
+      month: moment(movie.film_info.release.date).format(MomentFormat.MMMM),
+      year: moment(movie.film_info.release.date).format(MomentFormat.YYYY)
     };
     this.rawDuration = movie.film_info.runtime;
-    this.duration = `${moment.utc().startOf(`day`).add({minutes: movie.film_info.runtime}).format(`H`)}h ${moment.utc().startOf(`day`).add({minutes: movie.film_info.runtime}).format(`mm`)}m`;
+    this.duration = `${moment.utc().startOf(MomentFormat.DAY).add({minutes: movie.film_info.runtime}).format(MomentFormat.H)}h ${moment.utc().startOf(MomentFormat.DAY).add({minutes: movie.film_info.runtime}).format(MomentFormat.MM)}m`;
     this.country = movie.film_info.release.release_country;
     this.genres = movie.film_info.genre;
     this.desc = movie.film_info.description;
