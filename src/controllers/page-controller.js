@@ -92,12 +92,14 @@ export default class PageController {
   show() {
     this.isHide = false;
     this._currentFilmsRendered = FILM_COUNT_SHOW;
-    this._updateMainFilms();
-    if (this._sortedMovies.length > this._currentFilmsRendered) {
-      this.renderShowMoreBtn();
+    //this._updateMainFilms();
+    if (!this._whenNoFilms()) {
+      if (this._sortedMovies.length > this._currentFilmsRendered) {
+        this.renderShowMoreBtn();
+      }
+      this._sortComponent.show();
+      this._container.show();
     }
-    this._sortComponent.show();
-    this._container.show();
   }
 
   render() {
