@@ -1,6 +1,6 @@
 
-import MovieAdapter from "../models/moviesAdapter.js";
-import commentsAdapter from "../models/commentsAdapter.js";
+import MovieAdapter from "../models/movies-adapter.js";
+import commentsAdapter from "../models/comments-adapter.js";
 
 const AUTH_PUT = `Basic er883jdzbdw`;
 

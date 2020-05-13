@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 import moment from "moment";
 import {getProfileRating, generateGenresObject} from "../util/other.js";
 

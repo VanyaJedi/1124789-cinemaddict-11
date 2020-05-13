@@ -1,4 +1,3 @@
-const headerElem = document.querySelector(`.header`);
 const mainElem = document.querySelector(`.main`);
 const footerElem = document.querySelector(`.footer`);
 
@@ -7,16 +6,15 @@ const STORE_PREFIX = `cinemaddict-localstorage`;
 const STORE_VER = `v1`;
 const STORE_NAME = `${STORE_PREFIX}-${STORE_VER}`;
 
-import {render, replace, remove} from "./util/manipulateDOM.js";
+import {render, replace, remove} from "./util/manipulate-dom.js";
 import Loading from "./components/loading.js";
 import Content from "./components/content.js";
 import Statistics from "./components/statisctics.js";
-import UserProfile from "./components/userProfile.js";
-import PageController from "./controllers/pageController.js";
-import FilterController from "./controllers/filterController.js";
-import StatController from "./controllers/statController";
+import PageController from "./controllers/page-controller.js";
+import FilterController from "./controllers/filter-controller.js";
+import StatController from "./controllers/stat-controller";
 import Movies from "./models/movies.js";
-import API from "./api/index.js";
+import API from "./api/api.js";
 import Provider from "./api/provider.js";
 import Store from "./api/store.js";
 
@@ -56,8 +54,7 @@ const renderContent = () => {
   const statistics = new Statistics(moviesModel);
   replace(statistics, statisticsEmpty);
   const statController = new StatController(mainElem, moviesModel);
-  const userProfile = new UserProfile(moviesModel);
-  render(headerElem, userProfile);
+  pageController.renderUserProfile();
   filterController.updateComponent(moviesModel);
   pageController.renderSort();
   render(mainElem, content);

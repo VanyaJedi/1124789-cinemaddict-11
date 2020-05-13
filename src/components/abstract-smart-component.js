@@ -1,5 +1,5 @@
 
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 
 export default class AbstractSmartComponent extends AbstractComponent {
 
@@ -7,7 +7,7 @@ export default class AbstractSmartComponent extends AbstractComponent {
     throw new Error(`Methos recoveryListeners should exist`);
   }
 
-  rerender() {
+  reRender() {
     const oldElement = this.getElement();
     const parent = oldElement.parentElement;
 

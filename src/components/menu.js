@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 
 const createMenuTemplate = (films, activeFilter) => {
   const watchList = films.filter((it) => it.addToWatchlist);

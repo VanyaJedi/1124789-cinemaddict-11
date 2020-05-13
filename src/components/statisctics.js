@@ -1,5 +1,5 @@
 
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 export default class Statistics extends AbstractComponent {
   constructor(films) {
     super();

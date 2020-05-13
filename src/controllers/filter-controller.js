@@ -1,5 +1,5 @@
 import Menu from "../components/menu.js";
-import {render, replace} from "../util/manipulateDOM.js";
+import {render, replace} from "../util/manipulate-dom.js";
 import {FilterType} from "../util/filter.js";
 
 export default class FilterController {

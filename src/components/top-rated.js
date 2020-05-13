@@ -1,12 +1,12 @@
 
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 
-export default class MostCommented extends AbstractComponent {
+export default class TopRated extends AbstractComponent {
 
   getTemplate() {
     return (
       `<section class="films-list--extra">
-          <h2 class="films-list__title">Most commented</h2>
+          <h2 class="films-list__title">Top rated</h2>
           <div class="films-list__container">
           </div>
         </section>
@@ -17,5 +17,4 @@ export default class MostCommented extends AbstractComponent {
   getContainer() {
     return this.getElement().querySelector(`.films-list__container`);
   }
-
 }

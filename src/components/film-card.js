@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 
 export default class FilmCard extends AbstractComponent {
 
@@ -9,7 +9,7 @@ export default class FilmCard extends AbstractComponent {
 
   getTemplate() {
     const {item, poster, name, rate, releaseDate, duration, genres, desc, comments, addToWatchlist, watched, favourites} = this._film;
-    const descLen = 140;
+    const DESC_LEN = 140;
     return (
       `<article class="film-card" data-address=${item}>
         <h3 class="film-card__title">${name}</h3>
@@ -20,7 +20,7 @@ export default class FilmCard extends AbstractComponent {
           <span class="film-card__genre">${genres[0]}</span>
         </p>
         <img src="${poster}" alt="" class="film-card__poster">
-        <p class="film-card__description">${desc.length > descLen ? desc.substr(0, descLen - 1) + `...` : desc}</p>
+        <p class="film-card__description">${desc.length > DESC_LEN ? `${desc.substr(0, DESC_LEN - 1)}...` : desc}</p>
         <a class="film-card__comments">${comments.length} comments</a>
         <form class="film-card__controls">
           <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${addToWatchlist ? `film-card__controls-item--active` : ``}">Add to watchlist</button>

@@ -1,7 +1,7 @@
 
-import AbstractSmartComponent from "./abstractSmartComponent.js";
+import AbstractSmartComponent from "./abstract-smart-component.js";
 import moment from "moment";
-import {createElement} from "../util/manipulateDOM.js";
+import {remove, createElement} from "../util/manipulate-dom.js";
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
@@ -177,6 +177,8 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._addDeleteCommentHandler = null;
 
     this.insertEmojiElement = this.insertEmojiElement.bind(this);
+    this.closePopup = this.closePopup.bind(this);
+    this.onEscKeyDownClosePopup = this.onEscKeyDownClosePopup.bind(this);
   }
 
   getTemplate() {
@@ -195,9 +197,19 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   closePopup() {
-    if (document.querySelector(`.film-details`)) {
-      document.querySelector(`.film-details`).remove();
+    if (this.getElement()) {
+      document.removeEventListener(`keydown`, this.sendFormByBtn);
+      document.removeEventListener(`keydown`, this.onEscKeyDownClosePopup);
+      remove(this);
       document.body.classList.remove(`hide-overflow`);
+    }
+  }
+
+  onEscKeyDownClosePopup(btnEvt) {
+    const isEscKey = btnEvt.key === `Escape` || btnEvt.key === `Esc`;
+    if (isEscKey) {
+      this.closePopup();
+      document.removeEventListener(`keydown`, this.onEscKeyDownClosePopup);
     }
   }
 
@@ -235,7 +247,7 @@ export default class FilmPopup extends AbstractSmartComponent {
     this._oldEmojiElement = this._emojiElement;
     const emojiTemplate = `<img src="images/emoji/${this._emojiValue}.png" width="55" height="55" alt="emoji-smile">`;
     this._emojiElement = createElement(emojiTemplate);
-    const emojiContainer = this._element.querySelector(`.film-details__add-emoji-label`);
+    const emojiContainer = this.getElement().querySelector(`.film-details__add-emoji-label`);
     if (!this._oldEmojiElement) {
       emojiContainer.append(this._emojiElement);
     } else {

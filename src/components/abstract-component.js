@@ -1,4 +1,4 @@
-import {createElement} from "../util/manipulateDOM.js";
+import {createElement} from "../util/manipulate-dom.js";
 const HIDDEN_CLASS = `visually-hidden`;
 
 export default class AbstractComponent {

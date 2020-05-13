@@ -1,4 +1,4 @@
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 import {SortType} from "../util/other.js";
 
 export default class Sort extends AbstractComponent {

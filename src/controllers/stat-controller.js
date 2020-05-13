@@ -1,5 +1,5 @@
 import Stat from "../components/stat.js";
-import {render, replace} from "../util/manipulateDOM.js";
+import {render, replace} from "../util/manipulate-dom.js";
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 

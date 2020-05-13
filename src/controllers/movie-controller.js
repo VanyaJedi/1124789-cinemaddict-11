@@ -1,7 +1,7 @@
 
-import FilmPopup from "../components/filmPopup.js";
-import FilmCard from "../components/filmCard.js";
-import {render, replace, remove} from "../util/manipulateDOM.js";
+import FilmPopup from "../components/film-popup.js";
+import FilmCard from "../components/film-card.js";
+import {render, replace, remove} from "../util/manipulate-dom.js";
 
 import {encode} from "he";
 
@@ -15,6 +15,7 @@ export default class MovieController {
     this._filmPopupComponent = null;
 
     this._api = api;
+    this._isFormSending = false;
 
     this._onDataChange = onDataChange;
     this._onViewChange = onViewChange;
@@ -40,6 +41,7 @@ export default class MovieController {
       evt.preventDefault();
       this._onDataChange(this, this._filmData, Object.assign({}, this._filmData, {
         watched: !this._filmData.watched,
+      }, {watchingDate: new Date()
       }));
     });
 
@@ -66,8 +68,8 @@ export default class MovieController {
       this._api.getComments(this._filmData.item)
         .then((parsedComments) => {
           this._filmComments = parsedComments;
-          this._filmPopupComponent = new FilmPopup(this._filmData, this._filmComments);
           this._onViewChange();
+          this._filmPopupComponent = new FilmPopup(this._filmData, this._filmComments);
           this._filmPopupComponent.setAddToWatchBtnClick(() => {
             const newFilmData = Object.assign({}, this._filmData, {
               addToWatchlist: !this._filmData.addToWatchlist,
@@ -75,17 +77,18 @@ export default class MovieController {
             this._onDataChange(this, this._filmData, newFilmData);
             this._filmData = newFilmData;
             this._filmPopupComponent._film = newFilmData;
-            this._filmPopupComponent.rerender();
+            this._filmPopupComponent.reRender();
           });
 
           this._filmPopupComponent.setMarkAsWatchedBtnClick(()=>{
             const newFilmData = Object.assign({}, this._filmData, {
               watched: !this._filmData.watched,
+            }, {watchingDate: new Date()
             });
             this._onDataChange(this, this._filmData, newFilmData);
             this._filmData = newFilmData;
             this._filmPopupComponent._film = newFilmData;
-            this._filmPopupComponent.rerender();
+            this._filmPopupComponent.reRender();
           });
 
           this._filmPopupComponent.setAddToFavoriteBtnClick(()=>{
@@ -95,7 +98,7 @@ export default class MovieController {
             this._onDataChange(this, this._filmData, newFilmData);
             this._filmData = newFilmData;
             this._filmPopupComponent._film = newFilmData;
-            this._filmPopupComponent.rerender();
+            this._filmPopupComponent.reRender();
           });
 
           this._filmPopupComponent.setEmojiClickHandler((smileEvt) => {
@@ -103,30 +106,38 @@ export default class MovieController {
           });
 
           this._filmPopupComponent.setSendFormHanlder(() => {
-            this._filmPopupComponent.removeWrongInputEffect();
-            const encodeMessage = encode(this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value);
-            const emojiValue = this._filmPopupComponent._emojiValue;
-            const commentObject = {
-              comment: encodeMessage,
-              date: new Date(),
-              emotion: emojiValue
-            };
+            if (!this._isFormSending) {
+              this._isFormSending = true;
+              this._filmPopupComponent.removeWrongInputEffect();
+              const encodeMessage = encode(this._filmPopupComponent.getElement().querySelector(`.film-details__comment-input`).value);
+              const emojiValue = this._filmPopupComponent._emojiValue;
+              const commentObject = {
+                comment: encodeMessage,
+                date: new Date(),
+                emotion: emojiValue
+              };
 
-            this._filmPopupComponent.disableForm();
+              this._filmPopupComponent.disableForm();
 
-            this._api.addComment(this._filmData.item, commentObject)
+
+              this._api.addComment(this._filmData.item, commentObject)
               .then((comments) => {
                 this._filmData.comments = comments;
                 this._filmPopupComponent._comments = comments;
-                this._filmPopupComponent.rerender();
+                this._filmPopupComponent.reRender();
                 this.render(this._filmData);
                 this._onCommentsChange();
+                this._isFormSending = false;
               })
               .catch(()=>{
                 this._filmPopupComponent.enableForm();
                 this._filmPopupComponent.addWrongInputEffect();
                 this._filmPopupComponent.shakePopup();
+                this._isFormSending = false;
               });
+            }
+
+
           });
 
           this._filmPopupComponent.setDeleteCommentHandler((btnEvt) => {
@@ -142,7 +153,7 @@ export default class MovieController {
               .then((newParsedComments) => {
                 this._filmData.comments = newParsedComments;
                 this._filmPopupComponent._comments = newParsedComments;
-                this._filmPopupComponent.rerender();
+                this._filmPopupComponent.reRender();
                 this._onCommentsChange();
               })
               .catch(()=>{
@@ -156,17 +167,8 @@ export default class MovieController {
           render(document.body, this._filmPopupComponent);
           document.body.classList.add(`hide-overflow`);
 
-          const onEscKeyDownClosePopup = (btnEvt) => {
-            const isEscKey = btnEvt.key === `Escape` || btnEvt.key === `Esc`;
 
-            if (isEscKey) {
-              this._filmPopupComponent.closePopup();
-              document.removeEventListener(`keydown`, onEscKeyDownClosePopup);
-              document.removeEventListener(`keydown`, this._filmPopupComponent.sendFormByBtn);
-            }
-          };
-
-          document.addEventListener(`keydown`, onEscKeyDownClosePopup);
+          document.addEventListener(`keydown`, this._filmPopupComponent.onEscKeyDownClosePopup);
           this._filmPopupComponent.setCloseBtnHandler(this._filmPopupComponent.closePopup);
         });
 
@@ -186,7 +188,7 @@ export default class MovieController {
   updatePopup(data) {
     if (this._filmPopupComponent) {
       this._filmPopupComponent.setNewFilmData(data);
-      this._filmPopupComponent.rerender();
+      this._filmPopupComponent.reRender();
     }
   }
 }

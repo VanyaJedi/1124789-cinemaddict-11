@@ -1,4 +1,4 @@
-import MovieAdapter from "../models/moviesAdapter.js";
+import MovieAdapter from "../models/movies-adapter.js";
 
 const isOnline = () => {
   return window.navigator.onLine;

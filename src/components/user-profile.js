@@ -1,5 +1,5 @@
 
-import AbstractComponent from "./abstractComponent.js";
+import AbstractComponent from "./abstract-component.js";
 import {getProfileRating} from "../util/other.js";
 
 export default class UserProfile extends AbstractComponent {

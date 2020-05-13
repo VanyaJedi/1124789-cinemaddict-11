@@ -1,16 +1,18 @@
-import {render, remove} from "../util/manipulateDOM.js";
+import {render, remove, replace} from "../util/manipulate-dom.js";
 import {SortType} from "../util/other.js";
-import ShowMoreBtn from "../components/showMoreBtn.js";
-import TopRated from "../components/topRated.js";
-import MostCommented from "../components/mostCommented.js";
+import ShowMoreBtn from "../components/button-show-more.js";
+import TopRated from "../components/top-rated.js";
+import MostCommented from "../components/most-commented.js";
 import NoFilm from "../components/nofilm.js";
 import Sort from "../components/sort.js";
 
-import MovieController from "./movieController.js";
-import MovieAdapter from "../models/moviesAdapter.js";
+import MovieController from "./movie-controller.js";
+import MovieAdapter from "../models/movies-adapter.js";
+import UserProfile from "../components/user-profile.js";
 
 const FILM_COUNT_SHOW = 5;
 const mainElem = document.querySelector(`.main`);
+const headerElem = document.querySelector(`.header`);
 
 const getSortedFilms = (filmsArray, sortType, from, to) => {
   let showingFilms = filmsArray.slice();
@@ -50,6 +52,7 @@ export default class PageController {
 
     this._moviesModel = movieModel;
     this._showedFilms = [];
+    this._userProfileComponent = null;
     this._topRatedComponent = null;
     this._mostCommentedComponent = null;
     this._topRatedMovies = [];
@@ -66,6 +69,7 @@ export default class PageController {
     this._sortComponent = new Sort();
     this._noFilmComponent = new NoFilm();
     this._showMoreBtnComponent = new ShowMoreBtn();
+
 
     this._filmContainer = this._container.getElement().querySelector(`.films-list__container`);
     this._currentFilmsRendered = FILM_COUNT_SHOW;
@@ -106,6 +110,17 @@ export default class PageController {
 
     const filmControllers = renderFilms(this._filmContainer, this._sortedMovies.slice(0, this._currentFilmsRendered), this._onDataChange, this._onViewChange, this._api, this._updateAllFilms);
     this._showedFilms = this._showedFilms.concat(filmControllers);
+  }
+
+  renderUserProfile() {
+    this._oldUserProfile = this._userProfileComponent;
+    this._userProfileComponent = new UserProfile(this._moviesModel);
+    if (!this._oldUserProfile) {
+      render(headerElem, this._userProfileComponent);
+    } else {
+      replace(this._userProfileComponent, this._oldUserProfile);
+    }
+
   }
 
   renderTopAndMostCommented() {
@@ -158,7 +173,7 @@ export default class PageController {
 
   }
 
-  rerenderTopAndMostCommented() {
+  reRenderTopAndMostCommented() {
     if (this._topRatedComponent) {
       this._topRatedMovies.forEach((movie) => movie.destroy());
       this.renderTopRated();
@@ -228,8 +243,9 @@ export default class PageController {
   }
 
   _updateAllFilms() {
+    this.renderUserProfile();
     this._updateMainFilms();
-    this.rerenderTopAndMostCommented();
+    this.reRenderTopAndMostCommented();
   }
 
   _onDataChange(filmController, oldData, newData) {
