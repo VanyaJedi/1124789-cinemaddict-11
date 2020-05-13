@@ -31,6 +31,7 @@ export default class StatController {
 
   render() {
     const oldStateComponent = this._stateComponent;
+    this._movies = this._moviesModel.getAllMovies();
     this._stateComponent = new Stat(this._movies);
     if (!oldStateComponent) {
       render(this._container, this._stateComponent);

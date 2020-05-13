@@ -103,8 +103,8 @@ export default class Stat extends AbstractComponent {
     }, 0);
     const topGenre = getTopGenre(moviesWatched);
 
-    this.getElement().querySelector(`.statistic__item-length`).innerText = moviesWatchedLength;
-    this.getElement().querySelector(`.statistic__item-duration`).innerHTML = `${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)}`;
+    this.getElement().querySelector(`.statistic__item-length`).innerHTML = `${moviesWatchedLength}<span class="statistic__item-description">movies</span>`;
+    this.getElement().querySelector(`.statistic__item-duration`).innerHTML = `${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)}<span class="statistic__item-description">m</span>`;
     this.getElement().querySelector(`.statistic__item-top-genre`).innerText = topGenre;
   }
 }
