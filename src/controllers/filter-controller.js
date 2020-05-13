@@ -33,15 +33,15 @@ export default class FilterController {
     this._onDataChangeHandler();
   }
 
+  _onFilterChange(filterType) {
+    this._moviesModel.setFilter(filterType);
+    this._activeFilterType = filterType;
+  }
+
   _onDataChangeHandler() {
     this._movies = this._moviesModel.getAllMovies();
     this.render();
     this.setViewChangeHandler(this._changeViewHandler);
-  }
-
-  _onFilterChange(filterType) {
-    this._moviesModel.setFilter(filterType);
-    this._activeFilterType = filterType;
   }
 
   setViewChangeHandler(handler) {

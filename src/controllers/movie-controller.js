@@ -62,6 +62,23 @@ export default class MovieController {
     this._filmComponent.setShowPopupHandler(this._showPopup);
   }
 
+  setDefaultView() {
+    if (this._filmPopupComponent) {
+      this._filmPopupComponent.closePopup();
+    }
+  }
+
+  destroy() {
+    remove(this._filmComponent);
+  }
+
+  updatePopup(data) {
+    if (this._filmPopupComponent) {
+      this._filmPopupComponent.setNewFilmData(data);
+      this._filmPopupComponent.reRender();
+    }
+  }
+
 
   _showPopup(evt) {
     if (evt.target.classList.contains(`film-card__poster`) || evt.target.classList.contains(`film-card__title`) || evt.target.classList.contains(`film-card__comments`)) {
@@ -172,23 +189,6 @@ export default class MovieController {
           this._filmPopupComponent.setCloseBtnHandler(this._filmPopupComponent.closePopup);
         });
 
-    }
-  }
-
-  setDefaultView() {
-    if (this._filmPopupComponent) {
-      this._filmPopupComponent.closePopup();
-    }
-  }
-
-  destroy() {
-    remove(this._filmComponent);
-  }
-
-  updatePopup(data) {
-    if (this._filmPopupComponent) {
-      this._filmPopupComponent.setNewFilmData(data);
-      this._filmPopupComponent.reRender();
     }
   }
 }

@@ -1,7 +1,7 @@
 
 import AbstractComponent from "./abstract-component.js";
 
-export default class ShowMoreBtn extends AbstractComponent {
+export default class ButtonMore extends AbstractComponent {
   constructor() {
     super();
   }

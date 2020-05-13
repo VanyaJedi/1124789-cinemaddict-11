@@ -51,13 +51,6 @@ export default class StatController {
     this._stateComponent.hide();
   }
 
-  _getAllGenres() {
-    this._filteredMovies = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
-    this._genreObject = generateGenresObject(this._filteredMovies);
-    this._allGenresArray = Object.keys(this._genreObject);
-    this._genresNumbers = Object.values(this._genreObject);
-  }
-
   createChart() {
     this._getAllGenres();
     const allGenres = this._allGenresArray;
@@ -132,7 +125,13 @@ export default class StatController {
     this._chart.data.labels = this._allGenresArray;
     this._chart.update();
     this._stateComponent.updateMoviesData(this._filteredMovies);
+  }
 
+  _getAllGenres() {
+    this._filteredMovies = getMoviesForChart(this._movies.filter((movie) => movie.watched), this._chartFilter);
+    this._genreObject = generateGenresObject(this._filteredMovies);
+    this._allGenresArray = Object.keys(this._genreObject);
+    this._genresNumbers = Object.values(this._genreObject);
   }
 
 }

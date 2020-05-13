@@ -1,6 +1,6 @@
 import {render, remove, replace} from "../util/manipulate-dom.js";
 import {SortType} from "../util/other.js";
-import ShowMoreBtn from "../components/button-show-more.js";
+import ButtonMore from "../components/button-show-more.js";
 import TopRated from "../components/top-rated.js";
 import MostCommented from "../components/most-commented.js";
 import NoFilm from "../components/nofilm.js";
@@ -68,7 +68,7 @@ export default class PageController {
     this._container = container;
     this._sortComponent = new Sort();
     this._noFilmComponent = new NoFilm();
-    this._showMoreBtnComponent = new ShowMoreBtn();
+    this._showMoreBtnComponent = new ButtonMore();
 
 
     this._filmContainer = this._container.getElement().querySelector(`.films-list__container`);
@@ -208,19 +208,6 @@ export default class PageController {
     render(mainElem, this._sortComponent);
   }
 
-  _changeSortHandler(sortType) {
-    this._currentFilmsRendered = FILM_COUNT_SHOW;
-    this._sortType = sortType;
-    this._sortedMovies = getSortedFilms(this._movies, this._sortType, 0, this._movies.length);
-    const sortedFilmsArray = this._sortedMovies.slice(0, this._currentFilmsRendered);
-    this._removeMovies();
-    const filmSortedControllers = renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange, this._api, this._updateAllFilms);
-    this._showedFilms = this._showedFilms.concat(filmSortedControllers);
-    if (this._sortedMovies.length > this._currentFilmsRendered) {
-      this.renderShowMoreBtn();
-    }
-  }
-
   setDefaultSort() {
     if (this._sortType !== SortType.DEFAULT) {
       this._sortComponent.setDefaultSortActive();
@@ -262,7 +249,6 @@ export default class PageController {
     });
   }
 
-
   _onViewChange() {
     this._showedFilms.forEach((movieController) => {
       movieController.setDefaultView();
@@ -287,6 +273,19 @@ export default class PageController {
     this._movies = this._moviesModel.getMovies();
     this._currentFilmsRendered = FILM_COUNT_SHOW;
     this._updateMovies();
+  }
+
+  _changeSortHandler(sortType) {
+    this._currentFilmsRendered = FILM_COUNT_SHOW;
+    this._sortType = sortType;
+    this._sortedMovies = getSortedFilms(this._movies, this._sortType, 0, this._movies.length);
+    const sortedFilmsArray = this._sortedMovies.slice(0, this._currentFilmsRendered);
+    this._removeMovies();
+    const filmSortedControllers = renderFilms(this._filmContainer, sortedFilmsArray, this._onDataChange, this._onViewChange, this._api, this._updateAllFilms);
+    this._showedFilms = this._showedFilms.concat(filmSortedControllers);
+    if (this._sortedMovies.length > this._currentFilmsRendered) {
+      this.renderShowMoreBtn();
+    }
   }
 
 }
