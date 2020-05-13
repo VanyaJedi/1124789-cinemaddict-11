@@ -31,7 +31,7 @@ export default class StatController {
 
   render() {
     const oldStateComponent = this._stateComponent;
-    this._stateComponent = new Stat(this._filteredMovies);
+    this._stateComponent = new Stat(this._movies);
     if (!oldStateComponent) {
       render(this._container, this._stateComponent);
     } else {
@@ -40,11 +40,10 @@ export default class StatController {
   }
 
   show() {
-    this._movies = this._moviesModel.getAllMovies();
+    this._chartFilter = FilterChartType.ALL;
     this.render();
     this.createChart();
     this._stateComponent.setFilterHandlers(this.updateChart);
-    this._stateComponent.updateMoviesData(this._filteredMovies);
     this._stateComponent.show();
   }
 
@@ -63,7 +62,7 @@ export default class StatController {
     this._getAllGenres();
     const allGenres = this._allGenresArray;
     const genresNumbers = this._genresNumbers;
-    const statisticCtx = this._stateComponent._element.querySelector(`.statistic__chart`);
+    const statisticCtx = this._stateComponent.getElement().querySelector(`.statistic__chart`);
     statisticCtx.height = BAR_HEIGHT * 5;
     const myChart = new Chart(statisticCtx, {
       plugins: [ChartDataLabels],

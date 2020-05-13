@@ -88,7 +88,7 @@ export default class Stat extends AbstractComponent {
   }
 
   setFilterHandlers(handler) {
-    const filtersInput = this._element.querySelectorAll(`.statistic__filters-input`);
+    const filtersInput = this.getElement().querySelectorAll(`.statistic__filters-input`);
     Array.from(filtersInput).forEach((input) => {
       input.addEventListener(`change`, handler);
     });
