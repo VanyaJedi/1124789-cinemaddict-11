@@ -1,6 +1,6 @@
 import {render, remove, replace} from "../util/manipulate-dom.js";
 import {SortType} from "../util/other.js";
-import ButtonMore from "../components/button-show-more.js";
+import ButtonMore from "../components/button-more.js";
 import TopRated from "../components/top-rated.js";
 import MostCommented from "../components/most-commented.js";
 import NoFilm from "../components/nofilm.js";
@@ -87,17 +87,18 @@ export default class PageController {
     this.isHide = true;
     this._sortComponent.hide();
     this._container.hide();
+    this._noFilmComponent.hide();
   }
 
   show() {
     this.isHide = false;
     this._currentFilmsRendered = FILM_COUNT_SHOW;
+    this._sortComponent.show();
     if (!this._whenNoFilms()) {
       if (this._sortedMovies.length > this._currentFilmsRendered) {
         this.renderShowMoreBtn();
       }
       this._updateMainFilms();
-      this._sortComponent.show();
       this._container.show();
     }
   }
@@ -272,7 +273,9 @@ export default class PageController {
   _onFilterChange() {
     this._movies = this._moviesModel.getMovies();
     this._currentFilmsRendered = FILM_COUNT_SHOW;
-    this._updateMovies();
+    if (!this.isHide) {
+      this._updateMovies();
+    }
   }
 
   _changeSortHandler(sortType) {

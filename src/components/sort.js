@@ -35,7 +35,6 @@ export default class Sort extends AbstractComponent {
 
       if (evt.target.classList.contains(`sort__button`)) {
         const sortType = evt.target.dataset.sortType;
-
         if (sortType !== this._currentSort) {
           this._currentSort = sortType;
           handler(this._currentSort);
@@ -51,6 +50,7 @@ export default class Sort extends AbstractComponent {
     if (this._currentSort === SortType.DEFAULT) {
       return;
     }
+    this._currentSort = SortType.DEFAULT;
     this._removeActiveBtnClass();
     this.getElement().querySelector(`a[data-sort-type=${SortType.DEFAULT}]`).classList.add(`sort__button--active`);
   }

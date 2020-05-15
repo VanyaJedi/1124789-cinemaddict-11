@@ -1,5 +1,7 @@
 import AbstractComponent from "./abstract-component.js";
 
+const DESC_LEN = 140;
+
 export default class FilmCard extends AbstractComponent {
 
   constructor(film) {
@@ -9,7 +11,6 @@ export default class FilmCard extends AbstractComponent {
 
   getTemplate() {
     const {item, poster, name, rate, releaseDate, duration, genres, desc, comments, addToWatchlist, watched, favourites} = this._film;
-    const DESC_LEN = 140;
     return (
       `<article class="film-card" data-address=${item}>
         <h3 class="film-card__title">${name}</h3>
