@@ -95,7 +95,7 @@ export default class PageController {
     this._currentFilmsRendered = FILM_COUNT_SHOW;
     this._sortComponent.show();
     if (!this._whenNoFilms()) {
-      if (this._sortedMovies.length > this._currentFilmsRendered) {
+      if (this._movies.length > this._currentFilmsRendered) {
         this.renderShowMoreBtn();
       }
       this._updateMainFilms();
