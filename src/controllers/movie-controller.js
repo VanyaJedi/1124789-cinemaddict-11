@@ -5,6 +5,10 @@ import {render, replace, remove} from "../util/manipulate-dom.js";
 
 import {encode} from "he";
 
+const getCommentItems = (comments) => {
+  return comments.map((comment) => comment.item);
+};
+
 export default class MovieController {
 
   constructor(container, onDataChange, onViewChange, api, onCommentsChange) {
@@ -139,7 +143,7 @@ export default class MovieController {
 
               this._api.addComment(this._filmData.item, commentObject)
               .then((comments) => {
-                this._filmData.comments = comments;
+                this._filmData.comments = getCommentItems(comments);
                 this._filmPopupComponent._comments = comments;
                 this._filmPopupComponent.reRender();
                 this.render(this._filmData);

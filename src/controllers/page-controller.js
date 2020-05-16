@@ -96,9 +96,6 @@ export default class PageController {
     this._sortComponent.show();
     if (!this._whenNoFilms()) {
       this._updateMainFilms();
-      if (this._movies.length > this._currentFilmsRendered) {
-        this.renderShowMoreBtn();
-      }
       this._container.show();
     }
   }
@@ -230,6 +227,9 @@ export default class PageController {
   _updateMainFilms() {
     this._removeMovies();
     this.render();
+    if (this._movies.length > this._currentFilmsRendered) {
+      this.renderShowMoreBtn();
+    }
   }
 
   _updateAllFilms() {
