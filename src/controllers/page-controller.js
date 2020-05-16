@@ -95,10 +95,10 @@ export default class PageController {
     this._currentFilmsRendered = FILM_COUNT_SHOW;
     this._sortComponent.show();
     if (!this._whenNoFilms()) {
+      this._updateMainFilms();
       if (this._movies.length > this._currentFilmsRendered) {
         this.renderShowMoreBtn();
       }
-      this._updateMainFilms();
       this._container.show();
     }
   }
@@ -228,7 +228,7 @@ export default class PageController {
   }
 
   _updateMainFilms() {
-    this._showedFilms.forEach((showedFilm) => showedFilm.destroy());
+    this._removeMovies();
     this.render();
   }
 
