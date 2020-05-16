@@ -95,7 +95,7 @@ export default class PageController {
     this._currentFilmsRendered = FILM_COUNT_SHOW;
     this._sortComponent.show();
     if (!this._whenNoFilms()) {
-      this._updateMainFilms();
+      this._updateMovies();
       this._container.show();
     }
   }
@@ -224,21 +224,17 @@ export default class PageController {
     return false;
   }
 
-  _updateMainFilms() {
-    this._removeMovies();
-    this.render();
-    if (this._movies.length > this._currentFilmsRendered) {
-      this.renderShowMoreBtn();
-    }
-  }
-
   _updateAllFilms() {
     this.renderUserProfile();
-    this._updateMainFilms();
+    this._updateMovies();
+    this._showedFilms.forEach((movieController) => {
+      movieController.render(movieController._filmData);
+    });
     this.reRenderTopAndMostCommented();
   }
 
   _onDataChange(filmController, oldData, newData) {
+    this._currentFilmController = filmController;
     const movieId = oldData.item;
     const newMovie = MovieAdapter.toRaw(newData);
     this._api.updateMovie(movieId, newMovie)
@@ -251,6 +247,9 @@ export default class PageController {
   }
 
   _onViewChange() {
+    if (this._currentFilmController) {
+      this._currentFilmController.setDefaultView();
+    }
     this._showedFilms.forEach((movieController) => {
       movieController.setDefaultView();
     });

@@ -74,6 +74,7 @@ export default class MovieController {
 
   destroy() {
     remove(this._filmComponent);
+    this._filmComponent = null;
   }
 
   updatePopup(data) {
@@ -172,7 +173,7 @@ export default class MovieController {
                 return this._api.getComments(this._filmData.item);
               })
               .then((newParsedComments) => {
-                this._filmData.comments = newParsedComments;
+                this._filmData.comments = getCommentItems(newParsedComments);
                 this._filmPopupComponent._comments = newParsedComments;
                 this._filmPopupComponent.reRender();
                 this._onCommentsChange();
