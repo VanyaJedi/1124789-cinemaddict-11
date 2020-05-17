@@ -233,17 +233,21 @@ export default class PageController {
     this.reRenderTopAndMostCommented();
   }
 
-  _onDataChange(filmController, oldData, newData) {
+  _onDataChange(filmController, oldData, newData = null) {
     this._currentFilmController = filmController;
-    const movieId = oldData.item;
-    const newMovie = MovieAdapter.toRaw(newData);
-    this._api.updateMovie(movieId, newMovie)
-    .then((updatedData) => {
-      const isOldData = this._moviesModel.updateMovie(movieId, updatedData);
-      if (isOldData) {
-        this._updateAllFilms();
-      }
-    });
+    if (newData) {
+      const movieId = oldData.item;
+      const newMovie = MovieAdapter.toRaw(newData);
+      this._api.updateMovie(movieId, newMovie)
+      .then((updatedData) => {
+        const isOldData = this._moviesModel.updateMovie(movieId, updatedData);
+        if (isOldData) {
+          this._updateAllFilms();
+        }
+      });
+    } else {
+      this._updateAllFilms();
+    }
   }
 
   _onViewChange() {

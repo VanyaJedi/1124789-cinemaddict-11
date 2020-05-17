@@ -146,9 +146,8 @@ export default class MovieController {
               .then((comments) => {
                 this._filmData.comments = getCommentItems(comments);
                 this._filmPopupComponent._comments = comments;
+                this._onDataChange(this, this._filmData);
                 this._filmPopupComponent.reRender();
-                this.render(this._filmData);
-                this._onCommentsChange();
                 this._isFormSending = false;
               })
               .catch(()=>{
