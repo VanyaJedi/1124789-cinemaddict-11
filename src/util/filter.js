@@ -16,6 +16,13 @@ export const FilterChartType = {
   YEAR: `year`
 };
 
+const FilterDaysCount = {
+  TODAY: 0,
+  WEEK: 7,
+  MONTH: 31,
+  YEAR: 364
+};
+
 
 export const getTasksByFilter = (movies, filterType) => {
 
@@ -40,19 +47,19 @@ export const getMoviesForChart = (movies, filterType) => {
       return movies;
     case FilterChartType.TODAY:
       return movies.filter((movie) => {
-        return moment().diff(movie.watchingDate, `days`) === 0;
+        return moment().diff(movie.watchingDate, `days`) === FilterDaysCount.TODAY;
       });
     case FilterChartType.WEEK:
       return movies.filter((movie) => {
-        return moment().diff(movie.watchingDate, `days`) <= 7;
+        return moment().diff(movie.watchingDate, `days`) <= FilterDaysCount.WEEK;
       });
     case FilterChartType.MONTH:
       return movies.filter((movie) => {
-        return moment().diff(movie.watchingDate, `days`) <= 31;
+        return moment().diff(movie.watchingDate, `days`) <= FilterDaysCount.MONTH;
       });
     case FilterChartType.YEAR:
       return movies.filter((movie) => {
-        return moment().diff(movie.watchingDate, `days`) <= 364;
+        return moment().diff(movie.watchingDate, `days`) <= FilterDaysCount.YEAR;
       });
 
   }

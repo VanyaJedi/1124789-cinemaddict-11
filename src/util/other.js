@@ -5,13 +5,19 @@ const ProfileRang = {
   MOVIEBUFF: `movie buff`
 };
 
+const RatingCount = {
+  NOTHING: 0,
+  NOVICE: 11,
+  FAN: 21
+};
+
 
 export const getProfileRating = function (len) {
-  if (len === 0) {
+  if (len === RatingCount.NOTHING) {
     return ``;
-  } else if (len < 11) {
+  } else if (len < RatingCount.NOVICE) {
     return ProfileRang.NOVICE;
-  } else if (len < 21) {
+  } else if (len < RatingCount.FAN) {
     return ProfileRang.FAN;
   }
 

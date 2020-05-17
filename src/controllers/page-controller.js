@@ -3,7 +3,7 @@ import {SortType} from "../util/other.js";
 import ButtonMore from "../components/button-more.js";
 import TopRated from "../components/top-rated.js";
 import MostCommented from "../components/most-commented.js";
-import NoFilm from "../components/nofilm.js";
+import NoFilm from "../components/no-film.js";
 import Sort from "../components/sort.js";
 
 import MovieController from "./movie-controller.js";
@@ -246,6 +246,8 @@ export default class PageController {
         }
       });
     } else {
+      const movieId = oldData.item;
+      this._moviesModel.updateMovie(movieId, oldData);
       this._updateAllFilms();
     }
   }

@@ -304,9 +304,8 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   setSendFormHanlder(handler) {
-    this._setSendFormHandler = handler;
     this.sendFormByBtn = (evt) => {
-      if (evt.key === `Enter` && evt.ctrlKey) {
+      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
         handler();
       }
     };

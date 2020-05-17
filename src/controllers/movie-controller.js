@@ -175,7 +175,7 @@ export default class MovieController {
                 this._filmData.comments = getCommentItems(newParsedComments);
                 this._filmPopupComponent._comments = newParsedComments;
                 this._filmPopupComponent.reRender();
-                this._onCommentsChange();
+                this._onDataChange(this, this._filmData);
               })
               .catch(()=>{
                 deleteBtn.disabled = false;

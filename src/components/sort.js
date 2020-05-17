@@ -18,10 +18,6 @@ export default class Sort extends AbstractComponent {
     );
   }
 
-  getSortType() {
-    return this._currenSortType;
-  }
-
   _removeActiveBtnClass() {
     const btnList = this.getElement().querySelectorAll(`.sort__button`);
     btnList.forEach((btn) => {

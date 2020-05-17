@@ -19,7 +19,6 @@ export default class StatController {
     this._genreObject = null;
 
     this._allGenresArray = [];
-    this._genresCount = [];
 
     this._stateComponent = null;
 
