@@ -1,6 +1,7 @@
 import AbstractComponent from "./abstract-component.js";
-import moment from "moment";
 import {getProfileRating, generateGenresObject} from "../util/other.js";
+
+const MINUTES_IN_HOUR = 60;
 
 const getTopGenre = (movies) => {
   const genreCountObject = generateGenresObject(movies);
@@ -16,7 +17,13 @@ const getTopGenre = (movies) => {
   return topGenreName;
 };
 
-const createStatTemplate = function (movies) {
+const creatDurationTemplate = (duration) => {
+  const hours = Math.floor(duration / MINUTES_IN_HOUR);
+  const minutes = duration % MINUTES_IN_HOUR;
+  return `${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span>`;
+};
+
+const createStatTemplate = (movies) => {
   const moviesWatched = movies.filter((movie) => movie.watched);
   const moviesWatchedLength = moviesWatched.length;
   const profileRating = getProfileRating(moviesWatchedLength);
@@ -25,6 +32,7 @@ const createStatTemplate = function (movies) {
     return prev;
   }, 0);
 
+  const durationTemplate = creatDurationTemplate(totalDuration);
   const topGenre = getTopGenre(moviesWatched);
 
   return (
@@ -61,7 +69,7 @@ const createStatTemplate = function (movies) {
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Total duration</h4>
-          <p class="statistic__item-text statistic__item-duration">${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)} <span class="statistic__item-description">m</span></p>
+          <p class="statistic__item-text statistic__item-duration">${durationTemplate}</p>
         </li>
         <li class="statistic__text-item">
           <h4 class="statistic__item-title">Top genre</h4>
@@ -102,9 +110,10 @@ export default class Stat extends AbstractComponent {
       return prev;
     }, 0);
     const topGenre = getTopGenre(moviesWatched);
+    const durationTemplate = creatDurationTemplate(totalDuration);
 
     this.getElement().querySelector(`.statistic__item-length`).innerHTML = `${moviesWatchedLength}<span class="statistic__item-description">movies</span>`;
-    this.getElement().querySelector(`.statistic__item-duration`).innerHTML = `${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`H`)} <span class="statistic__item-description">h</span> ${moment.utc().startOf(`day`).add({minutes: totalDuration}).format(`mm`)}<span class="statistic__item-description">m</span>`;
+    this.getElement().querySelector(`.statistic__item-duration`).innerHTML = durationTemplate;
     this.getElement().querySelector(`.statistic__item-top-genre`).innerText = topGenre;
   }
 }
