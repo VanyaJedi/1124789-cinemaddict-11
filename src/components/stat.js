@@ -17,7 +17,7 @@ const getTopGenre = (movies) => {
   return topGenreName;
 };
 
-const creatDurationTemplate = (duration) => {
+const createDurationTemplate = (duration) => {
   const hours = Math.floor(duration / MINUTES_IN_HOUR);
   const minutes = duration % MINUTES_IN_HOUR;
   return `${hours} <span class="statistic__item-description">h</span> ${minutes} <span class="statistic__item-description">m</span>`;
@@ -32,7 +32,7 @@ const createStatTemplate = (movies) => {
     return prev;
   }, 0);
 
-  const durationTemplate = creatDurationTemplate(totalDuration);
+  const durationTemplate = createDurationTemplate(totalDuration);
   const topGenre = getTopGenre(moviesWatched);
 
   return (
@@ -110,7 +110,7 @@ export default class Stat extends AbstractComponent {
       return prev;
     }, 0);
     const topGenre = getTopGenre(moviesWatched);
-    const durationTemplate = creatDurationTemplate(totalDuration);
+    const durationTemplate = createDurationTemplate(totalDuration);
 
     this.getElement().querySelector(`.statistic__item-length`).innerHTML = `${moviesWatchedLength}<span class="statistic__item-description">movies</span>`;
     this.getElement().querySelector(`.statistic__item-duration`).innerHTML = durationTemplate;

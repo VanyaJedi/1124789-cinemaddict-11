@@ -12,7 +12,7 @@ const RatingCount = {
 };
 
 
-export const getProfileRating = function (len) {
+export const getProfileRating = (len) => {
   if (len === RatingCount.NOTHING) {
     return ``;
   } else if (len < RatingCount.NOVICE) {
@@ -31,7 +31,7 @@ export const SortType = {
 };
 
 
-export const generateGenresObject = function (movies) {
+export const generateGenresObject = (movies) => {
   const allGenresArray = [];
   const genresCount = {};
   movies.forEach((movie) => {
