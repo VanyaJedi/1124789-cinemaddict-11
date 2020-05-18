@@ -5,6 +5,12 @@ import {remove, createElement} from "../util/manipulate-dom.js";
 
 const SHAKE_ANIMATION_TIMEOUT = 600;
 
+const ButtonKey = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`,
+  ENTER: `Enter`
+};
+
 const createGenresList = (genres) => {
   return genres.map((genre) => {
     return `<span class="film-details__genre">${genre}</span> `;
@@ -267,7 +273,7 @@ export default class FilmPopup extends AbstractSmartComponent {
   }
 
   onEscKeyDownClosePopup(btnEvt) {
-    const isEscKey = btnEvt.key === `Escape` || btnEvt.key === `Esc`;
+    const isEscKey = btnEvt.key === ButtonKey.ESCAPE || btnEvt.key === ButtonKey.ESC;
     if (isEscKey) {
       this.closePopup();
       document.removeEventListener(`keydown`, this.onEscKeyDownClosePopup);
@@ -305,7 +311,7 @@ export default class FilmPopup extends AbstractSmartComponent {
 
   setSendFormHanlder(handler) {
     this.sendFormByBtn = (evt) => {
-      if (evt.key === `Enter` && (evt.ctrlKey || evt.metaKey)) {
+      if (evt.key === ButtonKey.ENTER && (evt.ctrlKey || evt.metaKey)) {
         handler();
       }
     };
